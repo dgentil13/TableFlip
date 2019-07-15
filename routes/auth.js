@@ -71,20 +71,24 @@ authRoutes.get("/logout", (req, res) => {
 
 //Sign In with Google
 authRoutes.get("/google", passport.authenticate("google", {
-  scope: ["https://www.googleapis.com/auth/plus.login",
-    "https://www.googleapis.com/auth/plus.profile.emails.read"]
+  scope: [
+          "https://www.googleapis.com/auth/plus.login",
+          "https://www.googleapis.com/auth/plus.profile.emails.read",
+          "https://www.googleapis.com/auth/userinfo.email"
+        ]
 }));
 
 authRoutes.get("/google/callback", passport.authenticate("google", {
-  failureRedirect: "/login",
+  failureRedirect: "/auth/login",
   successRedirect: "/home"
 }));
 
-
+// home
 authRoutes.get('/home', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   res.render('auth/home');
 });
 
+// events
 authRoutes.get('/events', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   Events.find()
   .then(allEvents => res.render('auth/allevents', allEvents))
