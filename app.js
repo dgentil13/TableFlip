@@ -117,7 +117,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/", indexRoutes);
-app.use("/auth", authRoutes);
+app.use("/", authRoutes);
 
 app.listen(process.env.PORT, () =>
   console.log("server is running on port 3000")

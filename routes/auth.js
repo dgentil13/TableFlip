@@ -1,6 +1,7 @@
 const express = require("express");
 const authRoutes = express.Router();
 const passport = require('passport');
+const ensureLogin = require('connect-ensure-login');
 
 // User model
 const User = require("../models/user");
@@ -57,7 +58,7 @@ authRoutes.get("/login", (req, res, next) => {
 
 authRoutes.post("/login", passport.authenticate("local", {
   successRedirect: "/home",
-  failureRedirect: "/auth/login",
+  failureRedirect: "/login",
   failureFlash: true,
   passReqToCallback: true
 }));
@@ -75,8 +76,23 @@ authRoutes.get("/google", passport.authenticate("google", {
 }));
 
 authRoutes.get("/google/callback", passport.authenticate("google", {
-  failureRedirect: "/auth/login",
+  failureRedirect: "/login",
   successRedirect: "/home"
 }));
+
+
+authRoutes.get('/home', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
+  res.render('auth/home');
+});
+
+authRoutes.get('/events', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
+  Events.find()
+  .then(allEvents => res.render('auth/allevents', allEvents))
+  .catch(err => console.log(err))
+});
+
+authRoutes.get('/createvents', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
+  res.render('auth/createvents');
+});
 
 module.exports = authRoutes;

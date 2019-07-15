@@ -1,16 +1,12 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const ensureLogin = require("connect-ensure-login");
 
 //models
-const User = require("../models/user");
+const User = require('../models/user');
+const Events = require('../models/events');
 
-router.get("/", (req, res) => {
-    res.render("index");
+router.get('/', (req, res) => {
+    res.render('index');
   });
   
-router.get("/home", ensureLogin.ensureLoggedIn('/auth/login'), (req, res) => {
-  res.render("home");
-});
-
 module.exports = router;
