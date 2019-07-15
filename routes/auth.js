@@ -5,6 +5,7 @@ const ensureLogin = require('connect-ensure-login');
 
 // User model
 const User = require("../models/user");
+const Events = require('../models/events');
 
 // Bcrypt to encrypt passwords
 const bcrypt = require("bcrypt");
@@ -83,7 +84,7 @@ authRoutes.get("/google/callback", passport.authenticate("google", {
   successRedirect: "/home"
 }));
 
-// home
+// home page
 authRoutes.get('/home', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   res.render('auth/home', {user: req.user});
 });
@@ -127,13 +128,64 @@ authRoutes.post('/profile/edit/:profileID', ensureLogin.ensureLoggedIn('/login')
 
 // events
 authRoutes.get('/events', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
+
   Events.find()
-  .then(allEvents => res.render('auth/allevents', allEvents))
+  .then(allEvents => res.render('auth/allevents', { allEvents }))
   .catch(err => console.log(err))
+
 });
 
 authRoutes.get('/createvents', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   res.render('auth/createvents');
+});
+
+authRoutes.post('/createvents', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
+  const { title, type, description } = req.body;
+  const newEvent = new Events ({
+    title: title,
+    type: type,
+    description: description,
+    owner : req.user.id
+  })
+
+  newEvent.save().then(event => {
+    console.log('Success', event)
+  })
+  .catch(error => {
+    console.log('Error', eror)
+  })
+
+  res.redirect('/events');
+});
+
+authRoutes.get('/event/:ID', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
+
+  const eventID = req.params.ID;
+  const logged = req.user.id;
+
+  Events.findById(eventID).populate('players')
+  .then(event => {
+    res.render('auth/event', { event, logged});
+  })
+  .catch(err => console.log(err))
+  
+});
+
+authRoutes.get('/join/:idevent/:ID', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
+
+  const eventID = req.params.idevent;
+  const player = req.params.ID;
+  console.log(player);
+
+  User.findById(player).then(answer => {
+    Events.update({_id: eventID}, {$push: { players:  answer }})
+    .then(success => console.log(success))
+    .catch(err => console.log(err));
+  }).catch(err => console.log(err));
+
+
+  
+  res.redirect(`/event/${eventID}`)
 });
 
 module.exports = authRoutes;

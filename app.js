@@ -10,7 +10,7 @@ const session = require("express-session");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
+const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 const MongoStore = require("connect-mongo")(session);
 
 //routes
@@ -116,12 +116,12 @@ passport.use(new GoogleStrategy({
   })
 
 }));
+  
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/", indexRoutes);
 app.use("/", authRoutes);
-
 app.listen(process.env.PORT, () =>
   console.log("server is running on port 3000")
 );
