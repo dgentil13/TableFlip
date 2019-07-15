@@ -8,6 +8,7 @@ const userSchema = new Schema({
   googleID: String,
   firstName: String,
   lastName: String,
+  description: String,
   // gameInterests: String,
   // level: Number,s
 }, {

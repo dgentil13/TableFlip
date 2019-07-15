@@ -86,7 +86,44 @@ authRoutes.get("/google/callback", passport.authenticate("google", {
 
 // home page
 authRoutes.get('/home', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
-  res.render('auth/home');
+  res.render('auth/home', {user: req.user});
+});
+
+//profile
+
+authRoutes.get('/profile/:userID', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
+  const userId = req.params.userID;
+  User.findById(userId)
+    .then(profile => {
+      console.log(profile);
+      res.render('auth/profile', profile );
+    })
+    .catch(err => console.log(err));
+});
+
+
+authRoutes.get('/profile/edit/:profileID', ensureLogin.ensureLoggedIn('/login'), (req, res, next) => {
+  User.findById(req.params.profileID)
+    .then((profile) => {
+      res.render("auth/profile-edit", profile);
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+});
+
+authRoutes.post('/profile/edit/:profileID', ensureLogin.ensureLoggedIn('/login'), (req, res, next) => {
+  const { firstName, lastName, email, description } = req.body;
+
+  // const imageUrl = req.file.url;
+
+  User.update({ _id: req.params.profileID }, { $set: { firstName, lastName, email, description } })
+    .then((profile) => {
+      res.redirect('/profile/' + req.params.profileID);
+    })
+    .catch((error) => {
+      console.log(error);
+    })
 });
 
 // events
