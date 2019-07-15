@@ -9,6 +9,9 @@ const eventsSchema = new Schema({
     },
     owner: Schema.Types.ObjectId,
     description: String,
+    players :[
+     { type: Schema.Types.ObjectId, ref: 'User' }
+    ],
     comments: [
         {
         commentsID: [{ type: Schema.Types.ObjectId, ref: 'Comments' }],

@@ -72,8 +72,11 @@ authRoutes.get("/logout", (req, res) => {
 
 //Sign In with Google
 authRoutes.get("/google", passport.authenticate("google", {
-  scope: ["https://www.googleapis.com/auth/plus.login",
-    "https://www.googleapis.com/auth/plus.profile.emails.read"]
+  scope: [
+          "https://www.googleapis.com/auth/plus.login",
+          "https://www.googleapis.com/auth/plus.profile.emails.read",
+          "https://www.googleapis.com/auth/userinfo.email"
+        ]
 }));
 
 authRoutes.get("/google/callback", passport.authenticate("google", {
@@ -81,11 +84,12 @@ authRoutes.get("/google/callback", passport.authenticate("google", {
   successRedirect: "/home"
 }));
 
-
+// home page
 authRoutes.get('/home', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   res.render('auth/home');
 });
 
+// events
 authRoutes.get('/events', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
 
   Events.find()
@@ -114,18 +118,37 @@ authRoutes.post('/createvents', ensureLogin.ensureLoggedIn('/login'), (req, res)
     console.log('Error', eror)
   })
 
-  res.render('auth/events');
+  res.redirect('/events');
 });
 
 authRoutes.get('/event/:ID', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
 
   const eventID = req.params.ID;
-  Events.findById(eventID)
+  const logged = req.user.id;
+
+  Events.findById(eventID).populate('players')
   .then(event => {
-    res.render('auth/event', event);
+    res.render('auth/event', { event, logged});
   })
   .catch(err => console.log(err))
   
+});
+
+authRoutes.get('/join/:idevent/:ID', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
+
+  const eventID = req.params.idevent;
+  const player = req.params.ID;
+  console.log(player);
+
+  User.findById(player).then(answer => {
+    Events.update({_id: eventID}, {$push: { players:  answer }})
+    .then(success => console.log(success))
+    .catch(err => console.log(err));
+  }).catch(err => console.log(err));
+
+
+  
+  res.redirect(`/event/${eventID}`)
 });
 
 module.exports = authRoutes;
