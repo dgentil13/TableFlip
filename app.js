@@ -10,7 +10,7 @@ const session = require("express-session");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
+const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 const MongoStore = require("connect-mongo")(session);
 
 //routes
@@ -87,38 +87,41 @@ passport.use(
 );
 
 passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_OAUTH_CLIENTID,
-    clientSecret: process.env.GOOGLE_OAUTH_SECRET,
-    callbackURL: "/auth/google/callback"
-  }, (accessToken, refreshToken, profile, done) => {
-    console.log(profile)
-    User.findOne({ googleID: profile.id })
+  clientID: process.env.GOOGLE_OAUTH_CLIENTID,
+  clientSecret: process.env.GOOGLE_OAUTH_SECRET,
+  callbackURL: "/google/callback"
+}, (accessToken, refreshToken, profile, done) => {
+ 
+  console.log(profile)
+  User.findOne({ googleID: profile.id})
+  .then(user => {
+    if (user) {
+      return done(null, user);
+    }
+
+    const newUser = new User({
+      googleID: profile.id,
+      firstName: profile.name.givenName,
+      lastName: profile.name.familyName,
+      email: profile.email
+    });
+
+    newUser.save()
     .then(user => {
-      if (user) {
-        return done(null, user);
-      }
-  
-      const newUser = new User({
-        googleID: profile.id
-      });
-  
-      newUser.save()
-      .then(user => {
-        done(null, newUser);
-      })
+      done(null, newUser);
     })
-    .catch(error => {
-      done(error)
-    })
-  
-  }));
+  })
+  .catch(error => {
+    done(error)
+  })
+
+}));
   
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/", indexRoutes);
 app.use("/", authRoutes);
-
 app.listen(process.env.PORT, () =>
   console.log("server is running on port 3000")
 );
