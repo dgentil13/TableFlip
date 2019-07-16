@@ -1,0 +1,84 @@
+html {
+  margin: 0;
+  padding: 0;
+}
+body{
+  padding-top: 60px; 
+}
+.navbar {
+  width: 100%;
+  background-color: #333;
+  margin: 0;
+  padding: 0;
+  font-size: 1em;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-transform: uppercase;
+}
+.ul-nav {
+  list-style-type: none;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.signup {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  color: crimson;
+  font-size: 1.2em;
+  margin-top: 15px;
+}
+
+.li-nav a,
+.signup a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 20px 16px;
+  text-decoration: none;
+  background-color: transparent;
+  background-size: 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.li-nav a:hover,
+.signup a:hover {
+  background-color: #111;
+  background-size: 100%;
+}
+
+/* section main */
+.main {
+  height: 500px;
+  background-color: dimgray;
+}
+
+.features {
+  height: 500px;
+  background-color: white;
+}
+
+.about {
+  height: 500px;
+  background-color: dimgray;
+}
+/*query responsive menu */
+@media screen and (max-width: 600px) {
+  .signup {
+    margin: 0 auto;
+  }
+}
