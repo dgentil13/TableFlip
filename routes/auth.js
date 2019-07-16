@@ -6,6 +6,7 @@ const ensureLogin = require('connect-ensure-login');
 // User model
 const User = require("../models/user");
 const Events = require('../models/events');
+const Gameboard = require('../models/gameboard');
 
 // Bcrypt to encrypt passwords
 const bcrypt = require("bcrypt");
@@ -140,14 +141,23 @@ authRoutes.get('/createvents', ensureLogin.ensureLoggedIn('/login'), (req, res) 
   res.render('auth/createvents');
 });
 
+// route to get the data from gameboard for the axios
+authRoutes.get('/algumacoisa', (req, res) => {
+  Gameboard.find().then(response => {
+    res.send(response)
+  }).catch(err => console.log(err))
+});
+
 // route post that save the events
 authRoutes.post('/createvents', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
-  const { title, type, description } = req.body;
+  const { title, type, description , numberplayers , typegameboard} = req.body;
   const newEvent = new Events ({
     title: title,
     type: type,
     description: description,
-    owner : req.user.id
+    owner : req.user.id,
+    numberplayers: numberplayers,
+    choosegame: typegameboard
   })
 
   newEvent.save().then(event => {
@@ -166,15 +176,36 @@ authRoutes.get('/event/:ID', ensureLogin.ensureLoggedIn('/login'), (req, res) =>
   const eventID = req.params.ID;
   const logged = req.user.id;
 
-  Events.findById(eventID).populate('players')
+  Events.findById(eventID).populate('players').populate('owner').populate('choosegame')
   .then(event => {
-    res.render('auth/event', { event, logged });
+
+    let allJoined = event.players;
+    let validator = true;
+    let count = 1;
+    
+    allJoined.forEach(element => {
+      count += 1;
+      if(element.id.toString() === logged.toString()){
+        validator = false;
+      };
+    });
+
+    if(count === event.players.length){
+      validator = false;
+    }
+
+    if(!validator){
+      res.render('auth/event', { event, logged , count});
+    } else {
+      res.render('auth/event', { event, logged, validator, count});
+    }
+
   })
   .catch(err => console.log(err))
   
 });
 
-//router that a user, joins the event.
+//router that a user, joins the event. Sorry for the logic, its magic!!!!
 authRoutes.get('/join/:idevent/:ID', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
 
   const eventID = req.params.idevent;
@@ -189,13 +220,6 @@ authRoutes.get('/join/:idevent/:ID', ensureLogin.ensureLoggedIn('/login'), (req,
         validator = true;
       };
     });
-
-    let userJoined = [];
-    for (let i = 0; i < response.players.length; i++) {
-      if(!userJoined.includes(response.players[i].toString())){
-        userJoined.push(response.players[i].toString())
-      }
-    }
    
     if(response.owner.toString() === player || validator === true){
       res.redirect(`/event/${eventID}`)

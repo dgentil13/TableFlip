@@ -2,11 +2,24 @@
 <p>{{event.title}}</p>
 <p>{{event.type}}</p>
 <p>{{event.description}}</p>
-
+<p>{{event.choosegame.name}}</p>
+<img src="{{event.choosegame.image_url}}" alt="{{event.choosegame.name}}">
+<p>{{event.choosegame.description}}</p>
+<p>{{event.choosegame.numbermin}}</p>
+<p>{{event.choosegame.numbermax}}</p>
+<p>{{event.choosegame.time}}</p>
+<p>{{event.owner.firstName}} {{event.owner.lastName}}</p>
+<p>{{event.owner.email}}</p>
+<p>{{event.numberplayers}}</p>
+<p>{{count}}</p>
+{{#if event.players}}
 <p>Players :</p>
+{{/if}}
 {{#each event.players}}
     <p>{{this.firstName}} {{this.lastName}}</p>
     <p>{{this.email}}</p>
 {{/each}}
 
+{{#if validator}}
 <a href="/join/{{event.id}}/{{logged}}">Join</a>
+{{/if}}

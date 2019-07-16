@@ -7,11 +7,14 @@ const eventsSchema = new Schema({
         type: String,
         enum: ['boardgame', 'cardgame', 'tabletoprpg']
     },
-    owner: Schema.Types.ObjectId,
+    owner: { type: Schema.Types.ObjectId, ref: 'User' },
     description: String,
     players :[
-     { type: Schema.Types.ObjectId, ref: 'User' }
+    { type: Schema.Types.ObjectId, ref: 'User' }
     ],
+    choosegame: { type: Schema.Types.ObjectId, ref: 'Gameboard' }
+    ,
+    numberplayers: Number,
     comments: [
         {
         commentsID: [{ type: Schema.Types.ObjectId, ref: 'Comments' }],
