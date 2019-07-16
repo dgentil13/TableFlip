@@ -3,13 +3,19 @@
 
 <form action="/signup" method="POST" id="form-container">
   <label for="username">Username</label>
-  <input id="username" type="text" name="username" placeholder="JonSnow">
+  <input id="username" type="text" name="username" placeholder="JonSnow" required>
+  <br><br>
+  <label for="firstname">First Name</label>
+  <input id="firstname" type="text" name="firstname" placeholder="Jon" required>
+  <br><br>
+    <label for="lastname">Last Name</label>
+  <input id="lastname" type="text" name="lastname" placeholder="Snow" required>
   <br><br>
   <label for="username">Email</label>
-  <input id="username" type="text" name="email" placeholder="me@domain.com">
+  <input id="username" type="text" name="email" placeholder="me@domain.com" required>
   <br><br>
   <label for="password">Password</label>
-  <input id="password" type="password" name="password" placeholder="Your password">
+  <input id="password" type="password" name="password" placeholder="Your password" required>
 
   {{#if message}}
   <div class="error-message">{{ message }}</div>

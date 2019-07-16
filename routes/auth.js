@@ -17,9 +17,9 @@ authRoutes.get("/signup", (req, res) => {
 });
 
 authRoutes.post("/signup", (req, res) => {
-  const { username, password, email} = req.body;
+  const { username, password, email, firstname, lastname } = req.body;
 
-  if (username === "" || password === "" || email ==="") {
+  if (username === "" || password === "" || email === "" || firstname === "" || lastname === "") {
     res.render("auth/signup", { message: "Indicate username, password and email!" });
     return;
   }
@@ -37,7 +37,9 @@ authRoutes.post("/signup", (req, res) => {
       const newUser = new User({
         username,
         password: hashPass,
-        email
+        email,
+        firstName: firstname,
+        lastName: lastname
       });
 
       newUser.save((err) => {
@@ -115,8 +117,6 @@ authRoutes.get('/profile/edit/:profileID', ensureLogin.ensureLoggedIn('/login'),
 authRoutes.post('/profile/edit/:profileID', ensureLogin.ensureLoggedIn('/login'), (req, res, next) => {
   const { firstName, lastName, email, description } = req.body;
 
-  // const imageUrl = req.file.url;
-
   User.update({ _id: req.params.profileID }, { $set: { firstName, lastName, email, description } })
     .then((profile) => {
       res.redirect('/profile/' + req.params.profileID);
@@ -135,10 +135,12 @@ authRoutes.get('/events', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
 
 });
 
+// route that create events
 authRoutes.get('/createvents', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   res.render('auth/createvents');
 });
 
+// route post that save the events
 authRoutes.post('/createvents', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   const { title, type, description } = req.body;
   const newEvent = new Events ({
@@ -158,6 +160,7 @@ authRoutes.post('/createvents', ensureLogin.ensureLoggedIn('/login'), (req, res)
   res.redirect('/events');
 });
 
+// router that enters a specific event
 authRoutes.get('/event/:ID', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
 
   const eventID = req.params.ID;
@@ -165,27 +168,50 @@ authRoutes.get('/event/:ID', ensureLogin.ensureLoggedIn('/login'), (req, res) =>
 
   Events.findById(eventID).populate('players')
   .then(event => {
-    res.render('auth/event', { event, logged});
+    res.render('auth/event', { event, logged });
   })
   .catch(err => console.log(err))
   
 });
 
+//router that a user, joins the event.
 authRoutes.get('/join/:idevent/:ID', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
 
   const eventID = req.params.idevent;
   const player = req.params.ID;
-  console.log(player);
 
-  User.findById(player).then(answer => {
-    Events.update({_id: eventID}, {$push: { players:  answer }})
-    .then(success => console.log(success))
-    .catch(err => console.log(err));
-  }).catch(err => console.log(err));
+  Events.findById(eventID).then(response => {
 
+    let allJoined = response.players;
+    let validator = false;
+    allJoined.forEach(element => {
+      if(element.toString() === player.toString()){
+        validator = true;
+      };
+    });
 
-  
-  res.redirect(`/event/${eventID}`)
+    let userJoined = [];
+    for (let i = 0; i < response.players.length; i++) {
+      if(!userJoined.includes(response.players[i].toString())){
+        userJoined.push(response.players[i].toString())
+      }
+    }
+   
+    if(response.owner.toString() === player || validator === true){
+      res.redirect(`/event/${eventID}`)
+    } else {
+      User.findById(player).then(answer => {
+      
+      Events.update({_id: eventID}, {$push: { players:  answer }})
+      .then(success => console.log(success))
+      .catch(err => console.log(err))
+
+      }).catch(err => console.log(err));
+      res.redirect(`/event/${eventID}`)
+    }
+
+  });
+
 });
 
 module.exports = authRoutes;

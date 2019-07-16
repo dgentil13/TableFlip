@@ -5,7 +5,8 @@
 
 <p>Players :</p>
 {{#each event.players}}
-    <p>{{this}}</p>
+    <p>{{this.firstName}} {{this.lastName}}</p>
+    <p>{{this.email}}</p>
 {{/each}}
 
 <a href="/join/{{event.id}}/{{logged}}">Join</a>
