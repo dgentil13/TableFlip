@@ -6,6 +6,7 @@ const ensureLogin = require('connect-ensure-login');
 // User model
 const User = require("../models/user");
 const Events = require('../models/events');
+const Gameboard = require('../models/gameboard');
 
 // Bcrypt to encrypt passwords
 const bcrypt = require("bcrypt");
@@ -17,9 +18,9 @@ authRoutes.get("/signup", (req, res) => {
 });
 
 authRoutes.post("/signup", (req, res) => {
-  const { username, password, email} = req.body;
+  const { username, password, email, firstname, lastname } = req.body;
 
-  if (username === "" || password === "" || email ==="") {
+  if (username === "" || password === "" || email === "" || firstname === "" || lastname === "") {
     res.render("auth/signup", { message: "Indicate username, password and email!" });
     return;
   }
@@ -37,7 +38,9 @@ authRoutes.post("/signup", (req, res) => {
       const newUser = new User({
         username,
         password: hashPass,
-        email
+        email,
+        firstName: firstname,
+        lastName: lastname
       });
 
       newUser.save((err) => {
@@ -115,8 +118,6 @@ authRoutes.get('/profile/edit/:profileID', ensureLogin.ensureLoggedIn('/login'),
 authRoutes.post('/profile/edit/:profileID', ensureLogin.ensureLoggedIn('/login'), (req, res, next) => {
   const { firstName, lastName, email, description } = req.body;
 
-  // const imageUrl = req.file.url;
-
   User.update({ _id: req.params.profileID }, { $set: { firstName, lastName, email, description } })
     .then((profile) => {
       res.redirect('/profile/' + req.params.profileID);
@@ -135,17 +136,28 @@ authRoutes.get('/events', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
 
 });
 
+// route that create events
 authRoutes.get('/createvents', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   res.render('auth/createvents');
 });
 
+// route to get the data from gameboard for the axios
+authRoutes.get('/algumacoisa', (req, res) => {
+  Gameboard.find().then(response => {
+    res.send(response)
+  }).catch(err => console.log(err))
+});
+
+// route post that save the events
 authRoutes.post('/createvents', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
-  const { title, type, description } = req.body;
+  const { title, type, description , numberplayers , typegameboard} = req.body;
   const newEvent = new Events ({
     title: title,
     type: type,
     description: description,
-    owner : req.user.id
+    owner : req.user.id,
+    numberplayers: numberplayers,
+    choosegame: typegameboard
   })
 
   newEvent.save().then(event => {
@@ -158,34 +170,72 @@ authRoutes.post('/createvents', ensureLogin.ensureLoggedIn('/login'), (req, res)
   res.redirect('/events');
 });
 
+// router that enters a specific event
 authRoutes.get('/event/:ID', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
 
   const eventID = req.params.ID;
   const logged = req.user.id;
 
-  Events.findById(eventID).populate('players')
+  Events.findById(eventID).populate('players').populate('owner').populate('choosegame')
   .then(event => {
-    res.render('auth/event', { event, logged});
+
+    let allJoined = event.players;
+    let validator = true;
+    let count = 1;
+    
+    allJoined.forEach(element => {
+      count += 1;
+      if(element.id.toString() === logged.toString()){
+        validator = false;
+      };
+    });
+
+    if(count === event.players.length){
+      validator = false;
+    }
+
+    if(!validator){
+      res.render('auth/event', { event, logged , count});
+    } else {
+      res.render('auth/event', { event, logged, validator, count});
+    }
+
   })
   .catch(err => console.log(err))
   
 });
 
+//router that a user, joins the event. Sorry for the logic, its magic!!!!
 authRoutes.get('/join/:idevent/:ID', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
 
   const eventID = req.params.idevent;
   const player = req.params.ID;
-  console.log(player);
 
-  User.findById(player).then(answer => {
-    Events.update({_id: eventID}, {$push: { players:  answer }})
-    .then(success => console.log(success))
-    .catch(err => console.log(err));
-  }).catch(err => console.log(err));
+  Events.findById(eventID).then(response => {
 
+    let allJoined = response.players;
+    let validator = false;
+    allJoined.forEach(element => {
+      if(element.toString() === player.toString()){
+        validator = true;
+      };
+    });
+   
+    if(response.owner.toString() === player || validator === true){
+      res.redirect(`/event/${eventID}`)
+    } else {
+      User.findById(player).then(answer => {
+      
+      Events.update({_id: eventID}, {$push: { players:  answer }})
+      .then(success => console.log(success))
+      .catch(err => console.log(err))
 
-  
-  res.redirect(`/event/${eventID}`)
+      }).catch(err => console.log(err));
+      res.redirect(`/event/${eventID}`)
+    }
+
+  });
+
 });
 
 module.exports = authRoutes;

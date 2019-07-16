@@ -1,21 +1,31 @@
 
+
 <h2>Create Event</h2>
 
 <form action="/createvents" method="POST" id="form-container">
   <label for="username">Title: </label>
   <input id="username" type="text" name="title" placeholder="JonSnow">
   <br><br>
-  <select name="type" id="type">
+  <select name="type" id="type" onchange="selectorFunc()">
       <option value="boardgame"> Board Game</option>
       <option value="cardgame"> Card Game</option>
       <option value="tabletoprpg"> TableTop Rpg</option>
   </select>
   <br><br>
+  <select name="typegameboard" id="typegameboard">
+
+  </select>
+  <br><br>
+  <label for="numberplayer"> Number of players:</label>
+  <input type="number" id="numberplayers" name="numberplayers">
+  <br><br>
   <label for="description">Description: </label>
   <input id="description" type="text" name="description" >
-
   <br><br>
 
   <button type="submit">Create</button>
 
 </form>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="text/javascript" src="/js/createvents.js"></script>
