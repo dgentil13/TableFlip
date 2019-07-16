@@ -1,4 +1,23 @@
-<nav class="navbar">
+<!--Navbar-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top navbar-custom">
+  <a class="navbar-brand" href="#">TableFlip</a>
+  <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+    aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon icon-custom"></span>
+  </button>
+  <div class="collapse navbar-collapse justify-content-center div-nav-custom" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link li-custom active" href="#">Home <span class="sr-only">(current)</span></a>
+      <a class="nav-item nav-link li-custom" href="">Features</a>
+      <a class="nav-item nav-link li-custom" href="">About</a>
+    </div>
+  </div>
+  <a class="btn d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3 sign-up" href="/signup">Sign Up</a>
+
+</nav>
+<!--/.Navbar-->
+
+{{!-- <nav class="navbar">
   <div class="logo">
   <p>TableFlip</p>
 </div>
@@ -10,19 +29,50 @@
 <div class="signup">
   <a href="/signup">Sign Up</a>
 </div>
-</nav>
+</nav> --}}
 <section class="main">
-  <h1>Table Flip</h1>
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vestibulum risus sit amet enim sodales, at mollis sem molestie. 
-    Maecenas at molestie sapien, in interdum metus. Fusce tempus quis erat et facilisis. Quisque luctus massa non eros blandit tincidunt.
-    Vivamus dignissim vitae lacus id aliquet. Nullam tempor, risus vitae porttitor semper, tortor urna ultrices velit, eu placerat odio diam a odio.
-    Suspendisse fringilla iaculis nisl, eu consequat mauris consectetur dapibus. Donec in tortor nec magna consectetur posuere.
-  </p>
+  <div class="overlay">
+    <div class="main-custom container d-flex flex-column justify-content-center text-center">
+      <h1 class="display-4">TABLE FLIP</h1>
+      <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to
+        featured content or information.</p>
+      <hr class="my-4">
+      <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+      <p class="lead">
+        <a class="btn btn-primary btn-custom btn-lg" href="/signup" role="button">Get Started!</a>
+      </p>
+    </div>
+  </div>
 </section>
 <section class="features">
-
+  <div class="container align-features text-center">
+    <div class="row ">
+      <div class="col-lg-4">
+        <h2> Meet friends</h2>
+        <p> FEATURE 1</p>
+      </div>
+      <div class="col-lg-4">
+        <h2>Find Places</h2>
+        <p> FEATURE 1</p>
+      </div>
+      <div class="col-lg-4">
+        <h2>Join events</h2>
+        <p> FEATURE 1</p>
+      </div>
+    </div>
+  </div>
 </section>
 <section class="about">
-
+  <div class="container">
+    <div class="d-flex flex-column justify-content-center text-center">
+    <h2>About</h2>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pellentesque felis congue dolor placerat, 
+      nec varius orci eleifend. Vestibulum vel viverra magna. Curabitur metus tellus, pharetra nec est at, bibendum commodo odio.
+       Cras maximus leo vel ligula aliquet aliquet. Donec egestas nisl sed tortor tempus, eget pretium ipsum tincidunt.
+        Nulla tempus lacus at aliquam accumsan. Pellentesque suscipit ex nec erat facilisis, ut semper velit maximus.
+         Nunc justo ex, maximus quis dolor tincidunt, ultrices rutrum velit. Fusce pulvinar magna sed felis tristique
+    </p>
+  </div>
+  </div>
 </section>

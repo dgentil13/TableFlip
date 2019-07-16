@@ -2,10 +2,10 @@ html {
   margin: 0;
   padding: 0;
 }
-body{
-  padding-top: 60px; 
+body {
+  padding-top: 55px;
 }
-.navbar {
+/* .navbar {
   width: 100%;
   background-color: #333;
   margin: 0;
@@ -59,26 +59,151 @@ body{
 .signup a:hover {
   background-color: #111;
   background-size: 100%;
+} */
+
+/* FRONT-PAGE */
+.navbar {
+  padding: 0px 30px;
+}
+.navbar-custom {
+  text-transform: uppercase;
+}
+
+.custom-toggler {
+  border: 0px;
+  margin: 10px 0px;
+}
+
+.li-custom {
+  padding: 1em;
+  background-color: transparent;
+  background-size: 0;
+  transition: all 0.5s ease-in-out;
+}
+.li-custom:hover {
+  background-color: #664f01;
+}
+
+.sign-up {
+  color: white;
+  border-color: #755d0d;
+  background-color: transparent;
+  background-size: 0;
+  transition: all 0.5s ease-in-out;
+}
+.sign-up:hover {
+  background-color: #755d0d;
 }
 
 /* section main */
 .main {
-  height: 500px;
-  background-color: dimgray;
+  height: 90vh;
+  background-image: url(/images/cards-yellow.jpg);
+  background-size: cover;
+}
+.main-custom {
+  height: 100%;
+  width: 80%;
+  color: white;
 }
 
+.overlay {
+  background: rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  height: 100%;
+  z-index: 2;
+}
+.btn-custom {
+  background-color: rgb(47, 47, 46);
+  border: 1px rgb(47, 47, 46) solid;
+  border-radius: 25px;
+  margin-top: 5%;
+  text-transform: uppercase;
+}
+.btn-custom:hover {
+  background-color: #c99e10;
+  border: 1px #c99e10 solid;
+}
+.btn-custom:active {
+  background-color: #c99e10 !important;
+  border: 1px #c99e10 solid;
+}
+/* features */
 .features {
-  height: 500px;
+  height: 40vh;
   background-color: white;
 }
-
+.align-features {
+  padding-top: 5%;
+}
+/* about */
 .about {
-  height: 500px;
+  height: 40vh;
+  padding-top: 5%;
   background-color: dimgray;
 }
-/*query responsive menu */
-@media screen and (max-width: 600px) {
-  .signup {
-    margin: 0 auto;
-  }
+/* END FRONT PAGE */
+
+/* Sign up and Login*/
+.signup h2 {
+  padding-bottom: 5%;
+  text-transform: uppercase;
+  color: #c99e10;
+}
+.signup-form {
+  width: 50vh;
+  height: 65vh;
+  margin-top: 5%;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.first,
+.last {
+  width: 50%;
+}
+
+.name-sign {
+  display: flex;
+  justify-content: flex-end;
+}
+.btn-sign {
+  background-color: dimgray;
+  border: 1px dimgray solid;
+  border-radius: 25px;
+  text-transform: uppercase;
+  margin-bottom: 3%;
+}
+
+.btn-google {
+  background-color: rgb(116, 47, 47);
+  border: 1px rgb(116, 47, 47) solid;
+  border-radius: 25px;
+  text-transform: uppercase;
+  margin-bottom: 3%;
+}
+.btn-google a {
+  text-decoration: none;
+  color: white;
+}
+.btn-google:hover {
+  background-color: dimgray;
+  border: 1px dimgray solid;
+}
+.btn-google:active {
+  background-color: dimgray !important;
+  border: 1px dimgray solid;
+}
+.btn-sign:hover {
+  background-color: #c99e10;
+  border: 1px #c99e10 solid;
+}
+.btn-sign:active {
+  background-color: #c99e10 !important;
+  border: 1px #c99e10 solid;
+}
+.input-form:hover {
+  border: 2px solid #c99e10;
+}
+.sign-input {
+  padding: 0 30px;
 }

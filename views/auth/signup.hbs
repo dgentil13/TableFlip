@@ -1,25 +1,38 @@
 <!-- views/auth/signup.hbs -->
-<h2>Sign Up</h2>
+<section class="signup">
+  <div class="signup-form container d-flex flex-column justify-content-center text-center">
+    <h2>Sign Up</h2>
+    <form action="/signup" method="POST" id="form-container">
+      <div class="sign-input form-group">
+        <label for="exampleInputUsername1">Username</label>
+        <input id="username" class="input-form form-control" type="text" name="username" placeholder="JonSnow">
+      </div>
+      <div class="sign-input form-group">
+        <label for="exampleInputPassword1">Password</label>
+        <input id="password" class="input-form form-control" type="password" name="password"
+          placeholder="Your password">
+      </div>
+      <div class="sign-input form-group">
+        <label for="exampleInputEmail1">Email</label>
+        <input id="email" class="input-form form-control" type="text" name="email" placeholder="me@domain.com">
+      </div>
+      <label for="name"> Name</label>
+      <div class="sign-input form-group name-sign">
+        <input id="firstName" class="input-form form-control first" type="text" name="firstName"
+          placeholder="First name">
+        <input id="lastName" class="input-form form-control last" type="text" name="lastName" placeholder="Last name">
+      </div>
+      {{#if message}}
+      <div class="error-message">{{ message }}</div>
+      {{/if}}
+      <br><br>
 
-<form action="/signup" method="POST" id="form-container">
-  <label for="username">Username</label>
-  <input id="username" type="text" name="username" placeholder="JonSnow">
-  <br><br>
-  <label for="username">Email</label>
-  <input id="username" type="text" name="email" placeholder="me@domain.com">
-  <br><br>
-  <label for="password">Password</label>
-  <input id="password" type="password" name="password" placeholder="Your password">
+      <button type="submit" class="btn btn-primary btn-sign">Create Account</button>
 
-  {{#if message}}
-  <div class="error-message">{{ message }}</div>
-  {{/if}}
-  <br><br>
-
-  <button type="submit">Create account</button>
-
-  <p class="account-message">
-    Do you already have an account?
-    <a href="/login">Login</a>
-  </p>
-</form>
+      <p class="account-message">
+        Do you already have an account?
+        <a href="/login">Login</a>
+      </p>
+    </form>
+  </div>
+</section>
