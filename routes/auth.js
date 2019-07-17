@@ -114,9 +114,9 @@ authRoutes.get('/profile/edit/:profileID', ensureLogin.ensureLoggedIn('/login'),
 });
 
 authRoutes.post('/profile/edit/:profileID', ensureLogin.ensureLoggedIn('/login'), (req, res, next) => {
-  const { firstName, lastName, email, description } = req.body;
+  const { firstName, lastName, email, description, address } = req.body;
 
-  User.update({ _id: req.params.profileID }, { $set: { firstName, lastName, email, description } })
+  User.update({ _id: req.params.profileID }, { $set: { firstName, lastName, email, description, address } })
     .then((profile) => {
       res.redirect('/profile/' + req.params.profileID);
     })
@@ -173,7 +173,7 @@ authRoutes.get('/event/:ID', ensureLogin.ensureLoggedIn('/login'), (req, res) =>
 
   const eventID = req.params.ID;
   const logged = req.user.id;
-
+  const user = req.user;
   Events.findById(eventID).populate('players').populate('owner').populate('choosegame').populate({path: 'comments', populate: { path: 'owner'}})
   .then(event => {
 
@@ -193,9 +193,9 @@ authRoutes.get('/event/:ID', ensureLogin.ensureLoggedIn('/login'), (req, res) =>
     }
 
     if(!validator){
-      res.render('auth/event', { event, logged , count});
+      res.render('auth/event', { event, logged , count, user});
     } else {
-      res.render('auth/event', { event, logged, validator, count});
+      res.render('auth/event', { event, logged, validator, count, user});
     }
 
   })
@@ -262,9 +262,15 @@ authRoutes.post('/addcomment', ensureLogin.ensureLoggedIn('/login'), (req, res) 
   res.redirect(`/event/${eventID}`);
 
 });
-
+// router that open google maps and bring all players nearby
 authRoutes.get('/findfriends', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   res.render('auth/people', {user: req.user, GMAPS: process.env.GMAPS});
 });
 
+authRoutes.get('/get-address', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
+  User.find().then(response => {
+    res.send(response);
+  });
+
+});
 module.exports = authRoutes;

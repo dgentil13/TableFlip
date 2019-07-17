@@ -1,6 +1,6 @@
-<form action="/profile/edit/{{_id}}" method="post">
+<form action="/profile/edit/{{profile._id}}" method="post">
   <label for="">Name:</label>
-  <input type="text" name="firstName" value="{{profile.firstName}}"> <input type="text" name="lastName" value="{{lastName}}"> 
+  <input type="text" name="firstName" value="{{profile.firstName}}"> <input type="text" name="lastName" value="{{profile.lastName}}"> 
 <br><br>
   <label for="">Description:</label>
   <input type="text" name="description" value="{{profile.description}}">
@@ -9,5 +9,7 @@
   <label for="">Email:</label>
   <input type="text" name="email" value="{{profile.email}}">
 <br><br>
+  <label for="">Address:</label>
+  <input type="text" name="address" value="{{profile.address}}">
   <button type="submit">EDIT</button>
 </form>
