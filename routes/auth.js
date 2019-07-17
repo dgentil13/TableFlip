@@ -7,6 +7,7 @@ const ensureLogin = require('connect-ensure-login');
 const User = require("../models/user");
 const Events = require('../models/events');
 const Gameboard = require('../models/gameboard');
+const Comment = require('../models/comments');
 
 // Bcrypt to encrypt passwords
 const bcrypt = require("bcrypt");
@@ -18,9 +19,9 @@ authRoutes.get("/signup", (req, res) => {
 });
 
 authRoutes.post("/signup", (req, res) => {
-  const { username, password, email, firstname, lastname } = req.body;
+  const { username, password, email, firstName, lastName } = req.body;
 
-  if (username === "" || password === "" || email === "" || firstname === "" || lastname === "") {
+  if (username === "" || password === "" || email === "" || firstName === "" || lastName === "") {
     res.render("auth/signup", { message: "Indicate username, password and email!" });
     return;
   }
@@ -39,8 +40,8 @@ authRoutes.post("/signup", (req, res) => {
         username,
         password: hashPass,
         email,
-        firstName: firstname,
-        lastName: lastname
+        firstName: firstName,
+        lastName: lastName
       });
 
       newUser.save((err) => {
@@ -92,18 +93,15 @@ authRoutes.get('/home', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   res.render('auth/home', {user: req.user});
 });
 
-//profile
-
+// profile
 authRoutes.get('/profile/:userID', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   const userId = req.params.userID;
   User.findById(userId)
     .then(profile => {
-      console.log(profile);
       res.render('auth/profile', profile );
     })
     .catch(err => console.log(err));
 });
-
 
 authRoutes.get('/profile/edit/:profileID', ensureLogin.ensureLoggedIn('/login'), (req, res, next) => {
   User.findById(req.params.profileID)
@@ -142,7 +140,7 @@ authRoutes.get('/createvents', ensureLogin.ensureLoggedIn('/login'), (req, res) 
 });
 
 // route to get the data from gameboard for the axios
-authRoutes.get('/algumacoisa', (req, res) => {
+authRoutes.get('/getgames', (req, res) => {
   Gameboard.find().then(response => {
     res.send(response)
   }).catch(err => console.log(err))
@@ -150,7 +148,7 @@ authRoutes.get('/algumacoisa', (req, res) => {
 
 // route post that save the events
 authRoutes.post('/createvents', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
-  const { title, type, description , numberplayers , typegameboard} = req.body;
+  const { title, type, description , numberplayers , typegameboard } = req.body;
   const newEvent = new Events ({
     title: title,
     type: type,
@@ -158,14 +156,14 @@ authRoutes.post('/createvents', ensureLogin.ensureLoggedIn('/login'), (req, res)
     owner : req.user.id,
     numberplayers: numberplayers,
     choosegame: typegameboard
-  })
+  });
 
   newEvent.save().then(event => {
     console.log('Success', event)
   })
   .catch(error => {
     console.log('Error', eror)
-  })
+  });
 
   res.redirect('/events');
 });
@@ -176,7 +174,7 @@ authRoutes.get('/event/:ID', ensureLogin.ensureLoggedIn('/login'), (req, res) =>
   const eventID = req.params.ID;
   const logged = req.user.id;
 
-  Events.findById(eventID).populate('players').populate('owner').populate('choosegame')
+  Events.findById(eventID).populate('players').populate('owner').populate('choosegame').populate({path: 'comments', populate: { path: 'owner'}})
   .then(event => {
 
     let allJoined = event.players;
@@ -190,7 +188,7 @@ authRoutes.get('/event/:ID', ensureLogin.ensureLoggedIn('/login'), (req, res) =>
       };
     });
 
-    if(count === event.players.length){
+    if(count === event.players.length || event.owner.id.toString() === logged.toString()){
       validator = false;
     }
 
@@ -205,7 +203,7 @@ authRoutes.get('/event/:ID', ensureLogin.ensureLoggedIn('/login'), (req, res) =>
   
 });
 
-//router that a user, joins the event. Sorry for the logic, its magic!!!!
+// router that a user, joins the event. Sorry for the logic, its magic!!!!
 authRoutes.get('/join/:idevent/:ID', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
 
   const eventID = req.params.idevent;
@@ -215,13 +213,14 @@ authRoutes.get('/join/:idevent/:ID', ensureLogin.ensureLoggedIn('/login'), (req,
 
     let allJoined = response.players;
     let validator = false;
+
     allJoined.forEach(element => {
       if(element.toString() === player.toString()){
         validator = true;
       };
     });
-   
-    if(response.owner.toString() === player || validator === true){
+
+    if(response.owner.toString() === player.toString() || validator === true){
       res.redirect(`/event/${eventID}`)
     } else {
       User.findById(player).then(answer => {
@@ -236,6 +235,36 @@ authRoutes.get('/join/:idevent/:ID', ensureLogin.ensureLoggedIn('/login'), (req,
 
   });
 
+});
+
+// router that add comments in events
+authRoutes.post('/addcomment', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
+
+  const { comment , eventID } = req.body ;
+  const userLogged = req.user.id;
+  const newComment = new Comment({
+    owner: userLogged,
+    description: comment
+  });
+
+  newComment.save().then(comment => {
+    
+    Events.update({_id: eventID}, {$push: {comments: comment.id}})
+    .then(success => console.log(success))
+    .catch(err => console.log(err));
+
+    console.log('Success', comment);
+  })
+  .catch(error => {
+    console.log('Error', error);
+  });
+
+  res.redirect(`/event/${eventID}`);
+
+});
+
+authRoutes.get('/findfriends', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
+  res.render('auth/people', {user: req.user, GMAPS: process.env.GMAPS});
 });
 
 module.exports = authRoutes;

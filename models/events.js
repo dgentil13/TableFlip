@@ -9,16 +9,14 @@ const eventsSchema = new Schema({
     },
     owner: { type: Schema.Types.ObjectId, ref: 'User' },
     description: String,
-    players :[
-    { type: Schema.Types.ObjectId, ref: 'User' }
+    players : [
+        { type: Schema.Types.ObjectId, ref: 'User' }
     ],
     choosegame: { type: Schema.Types.ObjectId, ref: 'Gameboard' }
     ,
     numberplayers: Number,
     comments: [
-        {
-        commentsID: [{ type: Schema.Types.ObjectId, ref: 'Comments' }],
-        }
+        { type: Schema.Types.ObjectId, ref: 'Comments' }
       ],
 }, {
     timestamps: true
