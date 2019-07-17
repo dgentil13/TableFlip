@@ -98,7 +98,7 @@ authRoutes.get('/profile/:userID', ensureLogin.ensureLoggedIn('/login'), (req, r
   const userId = req.params.userID;
   User.findById(userId)
     .then(profile => {
-      res.render('auth/profile', profile );
+      res.render('auth/profile', {profile, user: req.user} );
     })
     .catch(err => console.log(err));
 });
@@ -106,7 +106,7 @@ authRoutes.get('/profile/:userID', ensureLogin.ensureLoggedIn('/login'), (req, r
 authRoutes.get('/profile/edit/:profileID', ensureLogin.ensureLoggedIn('/login'), (req, res, next) => {
   User.findById(req.params.profileID)
     .then((profile) => {
-      res.render("auth/profile-edit", profile);
+      res.render("auth/profile-edit",{profile, user: req.user});
     })
     .catch((error) => {
       console.log(error);
@@ -129,14 +129,14 @@ authRoutes.post('/profile/edit/:profileID', ensureLogin.ensureLoggedIn('/login')
 authRoutes.get('/events', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
 
   Events.find()
-  .then(allEvents => res.render('auth/allevents', { allEvents }))
+  .then(allEvents => res.render('auth/allevents', { allEvents, user: req.user }))
   .catch(err => console.log(err))
 
 });
 
 // route that create events
 authRoutes.get('/createvents', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
-  res.render('auth/createvents');
+  res.render('auth/createvents', {user: req.user});
 });
 
 // route to get the data from gameboard for the axios

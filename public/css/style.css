@@ -207,3 +207,87 @@ body {
 .sign-input {
   padding: 0 30px;
 }
+
+/* HOME NEWS */
+
+.news-line {
+  height: 40px;
+  width: 100%;
+  background-color: rgba(177, 131, 31, 0.589);
+  margin-top: 2%;
+  margin-bottom: 2%;
+  text-transform: uppercase;
+}
+.news-line h4 {
+  padding-top: 5px;
+}
+.card-body {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+.card {
+  border: 0px;
+  height: 50vh;
+  width: 30% !important;
+  box-shadow: 0 4px 8px 0 rgba(253, 222, 43, 0.1),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.media {
+  padding-bottom: 2%;
+  border-bottom: 1px solid rgba(46, 45, 43, 0.4);
+}
+.media img {
+  height: 20vh;
+}
+
+/* EVENTS */
+.create-event {
+  margin-top: 5%;
+}
+.create-custom {
+  width: 50%;
+  height: 70vh;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(253, 222, 43, 0.1),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.create-event h2 {
+  padding-bottom: 5%;
+  text-transform: uppercase;
+  color: #c99e10;
+}
+
+.btn-create-event {
+  margin-left: 40%;
+  margin-top: 5%;
+}
+.form-size {
+  width: 400px;
+}
+.form-size-sel {
+  width: 400px;
+}
+.form-size-sel1 {
+  width: 280px;
+}
+.form-size-num {
+  width: 100px;
+  margin-left: 10%;
+}
+
+@media only screen and (max-width: 830px) {
+  .form-size {
+    width: 300px;
+  }
+  .form-size-sel {
+    width: 200px;
+  }
+  .form-size-sel1 {
+    width: 180px;
+  }
+  .form-size-num {
+    width: 50px;
+    margin-left: 10%;
+  }
+}
