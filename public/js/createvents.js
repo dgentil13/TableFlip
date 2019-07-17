@@ -1,4 +1,3 @@
-
 let typeChange = document.getElementById('type');
 let typegame =  document.getElementById('typegameboard');
 let typegb = document.getElementById('typegb');
@@ -6,7 +5,7 @@ let selec = ``;
 
 window.onload = () => {
 
-    axios.get('http://localhost:3000/algumacoisa')
+    axios.get('http://localhost:3000/getgames')
     .then(response => {
         response.data.forEach(element => {
             selec += `<option value="${element._id}"> ${element.name} </option>`;
@@ -20,11 +19,13 @@ window.onload = () => {
 typeChange.onchange = () => {
 
     if(typeChange.value === 'boardgame'){
+
       typegb.setAttribute('style','display:inherit;');
       typegame.setAttribute('style','display:inherit;');
       typegame.innerHTML = selec;
 
     } else if( typeChange.value === 'cardgame'){
+
       typegb.setAttribute('style','display:inherit;');
       typegame.setAttribute('style','display:inherit;');
       typegame.innerHTML = `
