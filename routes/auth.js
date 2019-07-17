@@ -106,7 +106,8 @@ authRoutes.get('/profile/:userID', ensureLogin.ensureLoggedIn('/login'), (req, r
 authRoutes.get('/profile/edit/:profileID', ensureLogin.ensureLoggedIn('/login'), (req, res, next) => {
   User.findById(req.params.profileID)
     .then((profile) => {
-      res.render("auth/profile-edit",{profile, user: req.user});
+     const user = req.user;
+      res.render("auth/profile-edit",{profile, user});
     })
     .catch((error) => {
       console.log(error);
@@ -265,6 +266,10 @@ authRoutes.post('/addcomment', ensureLogin.ensureLoggedIn('/login'), (req, res) 
 
 authRoutes.get('/findfriends', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   res.render('auth/people', {user: req.user, GMAPS: process.env.GMAPS});
+});
+
+authRoutes.get('/places', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
+  res.render('auth/places-map', {user: req.user, GMAPS: process.env.GMAPS});
 });
 
 module.exports = authRoutes;
