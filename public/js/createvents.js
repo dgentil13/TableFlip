@@ -1,11 +1,10 @@
-
 let typeChange = document.getElementById('type');
 let typegame =  document.getElementById('typegameboard');
 let selec = ``;
 
 window.onload = () => {
 
-    axios.get('http://localhost:3000/algumacoisa')
+    axios.get('http://localhost:3000/getgames')
     .then(response => {
         // console.log(response.data);
         response.data.forEach(element => {
@@ -20,12 +19,12 @@ typeChange.onchange = () => {
 
     if(typeChange.value === 'boardgame'){
 
-      typegame.setAttribute('style','display:inherith;');
+      typegame.setAttribute('style','display:inherit;');
       typegame.innerHTML = selec;
 
     } else if( typeChange.value === 'cardgame'){
 
-      typegame.setAttribute('style','display:inherith;');
+      typegame.setAttribute('style','display:inherit;');
       typegame.innerHTML = `
       <option value="magic"> Magic The Gathering</option>
       <option value="yugioh"> Yu-Gi-Oh</option>

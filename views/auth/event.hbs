@@ -23,3 +23,17 @@
 {{#if validator}}
 <a href="/join/{{event.id}}/{{logged}}">Join</a>
 {{/if}}
+
+<p>Comments:</p>
+{{#each event.comments}}
+    <p>{{this.owner.firstName}} {{this.owner.lastName}}</p>
+    <p>{{this.owner.email}}</p>
+    <p>{{this.description}}</p>
+{{/each}}
+
+<form action="/addcomment" method="POST">
+    <input type="text" name="eventID" value={{event.id}} hidden>
+    <label for="comment"> Comment: </label>
+    <input type="text" name="comment">
+    <button type="submit">Send</button>
+</form>

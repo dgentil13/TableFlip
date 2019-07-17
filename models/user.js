@@ -9,8 +9,7 @@ const userSchema = new Schema({
   firstName: String,
   lastName: String,
   description: String,
-  // gameInterests: String,
-  // level: Number,s
+  // location: { type: { type: String }, coordinates: [Number] },
 }, {
     timestamps: true
   });
