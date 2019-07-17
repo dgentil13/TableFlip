@@ -10,7 +10,6 @@ window.onload = () => {
         response.data.forEach(element => {
             selec += `<option value="${element._id}"> ${element.name} </option>`;
         });
-        console.log(selec);
         typegame.innerHTML = selec;
     });
 

@@ -1,25 +1,71 @@
 
 function startMap() {
-    const ironhackBCN = {
-        lat: -23.464146,
-        lng: -46.878412
-    };
-    const map = new google.maps.Map(
-      document.getElementById('map'),
-      {
-        zoom: 15,
-        center: ironhackBCN
-      }
-    );
+    const geocoder = new google.maps.Geocoder();
+  // let infoWindow = new google.maps.infoWindow();
 
-    const myMarker = new google.maps.Marker({
+  // Store Ironhack's coordinates
+  const Brazil = { lat: -11.409874,  lng: -41.280857 };
+
+  // Initialize the map
+  const map = new google.maps.Map(document.getElementById('map'), 
+    {
+      zoom: 12,
+      center: Brazil
+    }
+  );
+
+  function geocodeAddress(geocoder, resultsMap, address) {
+          
+    geocoder.geocode({ 'address': address }, function (results, status) {
+    
+        if (status === 'OK') {
+        let marker = new google.maps.Marker({
+            map: resultsMap,
+            position: results[0].geometry.location
+        });
+        } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+        }
+    });
+  };
+      
+  axios.get('http://localhost:3000/get-address')
+  .then(response => {
+      response.data.forEach(element => {
+          if(element.address){
+            geocodeAddress(geocoder, map, element.address);
+          }
+      });
+  });
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      const user_location = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+
+      // Center map with user location
+      map.setCenter(user_location);
+
+      // Add a marker for your user location
+      const userLocation = new google.maps.Marker({
         position: {
-            lat: -23.464146,
-            lng: -46.878412
+          lat: user_location.lat,
+          lng: user_location.lng
         },
         map: map,
-        title: "House"
+        title: "You are here."
       });
+
+
+    }, function () {
+      console.log('Error in the geolocation service.');
+    });
+  } else {
+    console.log('Browser does not support geolocation.');
   }
-  
-  startMap();
+
+}
+
+startMap();
