@@ -2,14 +2,14 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-  username: String,
+  username: {type: String, unique: true},
   password: String,
   email: {type: String, unique: true},
   googleID: String,
   firstName: String,
   lastName: String,
   description: String,
-  // location: { type: { type: String }, coordinates: [Number] },
+  address: String,
 }, {
     timestamps: true
   });
