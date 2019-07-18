@@ -56,13 +56,12 @@ authRoutes.post("/signup", (req, res) => {
 });
 
 // Log In
-
 authRoutes.get("/login", (req, res, next) => {
   res.render("auth/login", { message: req.flash("error") });
 });
 
 authRoutes.post("/login", passport.authenticate("local", {
-  successRedirect: "/home",
+  successRedirect: `/home`,
   failureRedirect: "/login",
   failureFlash: true,
   passReqToCallback: true
@@ -135,6 +134,21 @@ authRoutes.get('/events', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
 
 });
 
+authRoutes.post('/events', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
+  const { type, typegameboard } = req.body;
+  console.log(type);
+  if(type === 'boardgame'){
+    Events.find({type: type, choosegame: typegameboard})
+    .then(allEvents => res.render('auth/allevents', { allEvents, user: req.user }))
+    .catch(err => console.log(err));
+  } else {
+    Events.find({type: type, cardGameName: typegameboard})
+    .then(allEvents => res.render('auth/allevents', { allEvents, user: req.user }))
+    .catch(err => console.log(err));
+  }
+
+});
+
 // route that create events
 authRoutes.get('/createvents', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   res.render('auth/createvents', {user: req.user});
@@ -150,15 +164,27 @@ authRoutes.get('/getgames', (req, res) => {
 // route post that save the events
 authRoutes.post('/createvents', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   const { title, type, description , numberplayers , typegameboard } = req.body;
-  const newEvent = new Events ({
-    title: title,
-    type: type,
-    description: description,
-    owner : req.user.id,
-    numberplayers: numberplayers,
-    choosegame: typegameboard
-  });
 
+  let newEvent;
+  if(type === 'boardgame') {
+    newEvent = new Events ({
+      title: title,
+      type: type,
+      description: description,
+      owner : req.user.id,
+      numberplayers: numberplayers,
+      choosegame: typegameboard
+    });
+  } else {
+    newEvent = new Events ({
+      title: title,
+      type: type,
+      description: description,
+      owner : req.user.id,
+      numberplayers: numberplayers,
+      cardGameName: typegameboard
+    });
+  }
   newEvent.save().then(event => {
     console.log('Success', event)
   })
@@ -177,11 +203,10 @@ authRoutes.get('/event/:ID', ensureLogin.ensureLoggedIn('/login'), (req, res) =>
   const user = req.user;
   Events.findById(eventID).populate('players').populate('owner').populate('choosegame').populate({path: 'comments', populate: { path: 'owner'}})
   .then(event => {
-
     let allJoined = event.players;
     let validator = true;
     let count = 1;
-    
+    let ownerValidator = false;
     allJoined.forEach(element => {
       count += 1;
       if(element.id.toString() === logged.toString()){
@@ -189,19 +214,56 @@ authRoutes.get('/event/:ID', ensureLogin.ensureLoggedIn('/login'), (req, res) =>
       };
     });
 
-    if(count === event.players.length || event.owner.id.toString() === logged.toString()){
+    if(count === event.players.length){
       validator = false;
     }
 
-    if(!validator){
-      res.render('auth/event', { event, logged , count, user});
-    } else {
-      res.render('auth/event', { event, logged, validator, count, user});
+    if(event.owner.id.toString() === logged.toString()) {
+      validator = false;
+      ownerValidator = true;
     }
+
+    res.render('auth/event', { event, logged, validator, count, user, ownerValidator, GMAPS: process.env.GMAPS});
 
   })
   .catch(err => console.log(err))
   
+});
+
+// router that edit a specific event
+authRoutes.get('/edit-event/:idEvent', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
+  const user = req.user;
+  Events.findById(req.params.idEvent)
+  .then(event => res.render('auth/edit-event', {event, user}))
+  .catch(error => console.log(error));
+});
+
+authRoutes.post('/edit-event/:idEvent', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
+  const { title, type, description , numberplayers , typegameboard, address, date} = req.body;
+
+  if(type === 'boardgame') {
+    const empty = '';
+    Events.findByIdAndUpdate(req.params.idEvent, {$set: {title: title, address: address, type: type, date: date, description: description, numberplayers: numberplayers, choosegame: typegameboard, cardGameName: empty}})
+    .then(success => console.log('Update done', success))
+    .catch(error => console.log('Error:', error));
+  } else {
+    const empty = null;
+    Events.findByIdAndUpdate(req.params.idEvent, {$set: {title: title, address: address, type: type, date: date, description: description, numberplayers: numberplayers, cardGameName: typegameboard, choosegame: empty}})
+    .then(success => console.log('Update done', success))
+    .catch(error => console.log('Error:', error));
+  }
+
+  res.redirect(`/event/${req.params.idEvent}`);
+});
+
+// router that delete a specific event
+authRoutes.get('/delete-event/:idEvent', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
+ 
+  Events.findOneAndRemove({_id: req.params.idEvent})
+  .then(success => console.log('Event Deleted,', success))
+  .catch(error => console.log('Error', error));
+
+  res.redirect('/events');
 });
 
 // router that a user, joins the event. Sorry for the logic, its magic!!!!
@@ -263,16 +325,15 @@ authRoutes.post('/addcomment', ensureLogin.ensureLoggedIn('/login'), (req, res) 
   res.redirect(`/event/${eventID}`);
 
 });
+
 // router that open google maps and bring all players nearby
 authRoutes.get('/findfriends', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   res.render('auth/people', {user: req.user, GMAPS: process.env.GMAPS});
 });
 
-
 authRoutes.get('/places', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   res.render('auth/places-map', {user: req.user, GMAPS: process.env.GMAPS});
 });
-
 
 authRoutes.get('/get-address', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   User.find().then(response => {

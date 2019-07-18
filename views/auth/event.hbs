@@ -1,13 +1,27 @@
-
+<style>
+    #map {
+    height: 500px;
+    width: 100%;
+    }
+</style>
+<input type="text" id="addressMap" value="{{event.address}}" hidden>
 <p>{{event.title}}</p>
 <p>{{event.type}}</p>
 <p>{{event.description}}</p>
+<p>{{event.address}}</p>
+<p>{{event.date}}</p>
+{{#if event.choosegame}}
 <p>{{event.choosegame.name}}</p>
 <img src="{{event.choosegame.image_url}}" alt="{{event.choosegame.name}}">
 <p>{{event.choosegame.description}}</p>
 <p>{{event.choosegame.numbermin}}</p>
 <p>{{event.choosegame.numbermax}}</p>
 <p>{{event.choosegame.time}}</p>
+{{/if}}
+
+{{#if event.cardGameName}}
+<p>{{event.cardGameName}}</p>
+{{/if}}
 <p>{{event.owner.firstName}} {{event.owner.lastName}}</p>
 <p>{{event.owner.email}}</p>
 <p>{{event.numberplayers}}</p>
@@ -24,16 +38,26 @@
 <a href="/join/{{event.id}}/{{logged}}">Join</a>
 {{/if}}
 
+{{#if ownerValidator}}
+<button><a href="/edit-event/{{event.id}}">Edit</a></button>
+<button><a href="/delete-event/{{event.id}}">Delete</a></button>
+{{/if}}
 <p>Comments:</p>
 {{#each event.comments}}
     <p>{{this.owner.firstName}} {{this.owner.lastName}}</p>
     <p>{{this.owner.email}}</p>
     <p>{{this.description}}</p>
 {{/each}}
-
+{{#if event.address}}
+<div id="map"></div>
+{{/if}}
 <form action="/addcomment" method="POST">
     <input type="text" name="eventID" value={{event.id}} hidden>
     <label for="comment"> Comment: </label>
     <input type="text" name="comment">
     <button type="submit">Send</button>
 </form>
+
+
+<script src="https://maps.googleapis.com/maps/api/js?key={{GMAPS}}"></script>
+<script type="text/javascript" src="/js/event-map.js"></script>
