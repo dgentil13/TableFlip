@@ -1,17 +1,27 @@
 const express = require("express");
 const authRoutes = express.Router();
-const passport = require('passport');
-const ensureLogin = require('connect-ensure-login');
+const passport = require("passport");
+const ensureLogin = require("connect-ensure-login");
+const uploadCloud = require("../public/js/cloudinary");
+const nodemailer = require("nodemailer");
 
 // User model
 const User = require("../models/user");
-const Events = require('../models/events');
-const Gameboard = require('../models/gameboard');
-const Comment = require('../models/comments');
+const Events = require("../models/events");
+const Gameboard = require("../models/gameboard");
+const Comment = require("../models/comments");
 
 // Bcrypt to encrypt passwords
 const bcrypt = require("bcrypt");
 const bcryptSalt = 10;
+
+let transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "dgentil1996@gmail.com",
+    pass: "grumps1307"
+  }
+});
 
 // Sing Up
 authRoutes.get("/signup", (req, res) => {
@@ -20,39 +30,74 @@ authRoutes.get("/signup", (req, res) => {
 
 authRoutes.post("/signup", (req, res) => {
   const { username, password, email, firstName, lastName } = req.body;
-
-  if (username === "" || password === "" || email === "" || firstName === "" || lastName === "") {
-    res.render("auth/signup", { message: "Indicate username, password and email!" });
+  const characters ="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let token = "";
+  for (let i = 0; i < 25; i++) {
+    token += characters[Math.floor(Math.random() * characters.length)];
+  }
+  const confirmationCode = token;
+  if (
+    username === "" ||
+    password === "" ||
+    email === "" ||
+    firstName === "" ||
+    lastName === ""
+  ) {
+    res.render("auth/signup", {
+      message: "Indicate username, password and email!"
+    });
     return;
   }
 
-  User.findOne({ username })
+  User.findOne({ username }).then(user => {
+    if (user !== null) {
+      res.render("auth/signup", { message: "The username already exists" });
+      return;
+    }
+
+    const salt = bcrypt.genSaltSync(bcryptSalt);
+    const hashPass = bcrypt.hashSync(password, salt);
+
+    const newUser = new User({
+      username,
+      password: hashPass,
+      email,
+      confirmationCode,
+      firstName: firstName,
+      lastName: lastName
+    });
+
+    newUser.save()
+      .then(() => { 
+        transporter
+          .sendMail({
+            from: '"Table Flip! " <table.flip@email.com>',
+            to: email,
+            subject: `Welcome ${username}!`,
+            text: "Welcome text",
+            html: `<b>confirmation: <a href="http://localhost:3000/confirm/${confirmationCode}"> Confirm Here</a></b>`
+          })
+          .then(info => res.redirect("/"))
+          .catch(error => console.log(error));
+      })
+      .catch(err => {
+        res.render("auth/signup", { message: "Something went wrong" });
+      });
+  });
+});
+
+// Confirm email
+authRoutes.get("/confirm/:confirmNum", (req, res, next) => {
+  User.findOneAndUpdate(
+    { confirmationCode: req.params.confirmNum },
+    { status: "Active" }
+  )
     .then(user => {
-      if (user !== null) {
-        res.render("auth/signup", { message: "The username already exists" });
-        return;
-      }
-
-      const salt = bcrypt.genSaltSync(bcryptSalt);
-      const hashPass = bcrypt.hashSync(password, salt);
-
-      const newUser = new User({
-        username,
-        password: hashPass,
-        email,
-        firstName: firstName,
-        lastName: lastName
-      });
-
-      newUser.save((err) => {
-        if (err) {
-          res.render("auth/signup", { message: "Something went wrong" });
-        } else {
-          res.redirect("/home"); 
-        }
-      });
+      res.render("auth/login");
     })
-    .catch(error => console.log(error));
+    .catch(err => {
+      res.render("/", { message: "Something went wrong" });
+    });
 });
 
 // Log In
@@ -61,11 +106,12 @@ authRoutes.get("/login", (req, res, next) => {
 });
 
 authRoutes.post("/login", passport.authenticate("local", {
-  successRedirect: `/home`,
-  failureRedirect: "/login",
-  failureFlash: true,
-  passReqToCallback: true
-}));
+    successRedirect: "/home",
+    failureRedirect: "/login",
+    failureFlash: true,
+    passReqToCallback: true
+  })
+);
 
 // Log Out
 authRoutes.get("/logout", (req, res) => {
@@ -74,65 +120,79 @@ authRoutes.get("/logout", (req, res) => {
 });
 
 //Sign In with Google
-authRoutes.get("/google", passport.authenticate("google", {
-  scope: [
-          "https://www.googleapis.com/auth/plus.login",
-          "https://www.googleapis.com/auth/plus.profile.emails.read",
-          "https://www.googleapis.com/auth/userinfo.email"
-        ]
-}));
+authRoutes.get(
+  "/google",
+  passport.authenticate("google", {
+    scope: [
+      "https://www.googleapis.com/auth/plus.login",
+      "https://www.googleapis.com/auth/plus.profile.emails.read",
+      "https://www.googleapis.com/auth/userinfo.email"
+    ]
+  })
+);
 
 authRoutes.get("/google/callback", passport.authenticate("google", {
-  failureRedirect: "/login",
-  successRedirect: "/home"
-}));
+    failureRedirect: "/login",
+    successRedirect: "/home"
+  })
+);
 
-// home page
-authRoutes.get('/home', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
-  res.render('auth/home', {user: req.user});
+// Home page
+authRoutes.get("/home", ensureLogin.ensureLoggedIn("/login"), (req, res) => {
+  res.render("auth/home", { user: req.user });
 });
 
-// profile
-authRoutes.get('/profile/:userID', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
-  const userId = req.params.userID;
-  User.findById(userId)
-    .then(profile => {
-      res.render('auth/profile', {profile, user: req.user} );
-    })
+// Profile
+authRoutes.get("/profile/:userID", ensureLogin.ensureLoggedIn("/login"),
+  (req, res) => {
+    const userId = req.params.userID;
+    User.findById(userId)
+      .then(profile => {
+        res.render("auth/profile", { profile, user: req.user });
+      })
+      .catch(err => console.log(err));
+  }
+);
+
+authRoutes.get("/profile/edit/:profileID", ensureLogin.ensureLoggedIn("/login"), (req, res, next) => {
+    User.findById(req.params.profileID)
+      .then(profile => {
+        const user = req.user;
+        res.render("auth/profile-edit", { profile, user });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+);
+
+authRoutes.post("/profile/edit/:profileID", ensureLogin.ensureLoggedIn("/login"),
+  uploadCloud.single("image"),
+  (req, res, next) => {
+    const { firstName, lastName, email, description, address } = req.body;
+    const imageUrl = req.file.url;
+    User.update(
+      { _id: req.params.profileID },
+      { $set: { firstName, lastName, email, description, address, imageUrl } }
+    )
+      .then(profile => {
+        res.redirect("/profile/" + req.params.profileID);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+);
+
+// Events
+authRoutes.get("/events", ensureLogin.ensureLoggedIn("/login"), (req, res) => {
+  Events.find()
+    .then(allEvents =>
+      res.render("auth/allevents", { allEvents, user: req.user })
+    )
     .catch(err => console.log(err));
 });
 
-authRoutes.get('/profile/edit/:profileID', ensureLogin.ensureLoggedIn('/login'), (req, res, next) => {
-  User.findById(req.params.profileID)
-    .then((profile) => {
-     const user = req.user;
-      res.render("auth/profile-edit",{profile, user});
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-});
-
-authRoutes.post('/profile/edit/:profileID', ensureLogin.ensureLoggedIn('/login'), (req, res, next) => {
-  const { firstName, lastName, email, description, address } = req.body;
-
-  User.update({ _id: req.params.profileID }, { $set: { firstName, lastName, email, description, address } })
-    .then((profile) => {
-      res.redirect('/profile/' + req.params.profileID);
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-});
-
-// events
-authRoutes.get('/events', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
-
-  Events.find()
-  .then(allEvents => res.render('auth/allevents', { allEvents, user: req.user }))
-  .catch(err => console.log(err))
-
-});
 
 authRoutes.post('/events', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   const { type, typegameboard } = req.body;
@@ -266,39 +326,41 @@ authRoutes.get('/delete-event/:idEvent', ensureLogin.ensureLoggedIn('/login'), (
   res.redirect('/events');
 });
 
-// router that a user, joins the event. Sorry for the logic, its magic!!!!
-authRoutes.get('/join/:idevent/:ID', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
 
-  const eventID = req.params.idevent;
-  const player = req.params.ID;
+// User Joining events
+authRoutes.get("/join/:idevent/:ID", ensureLogin.ensureLoggedIn("/login"), (req, res) => {
+    const eventID = req.params.idevent;
+    const player = req.params.ID;
 
-  Events.findById(eventID).then(response => {
+    Events.findById(eventID).then(response => {
+      let allJoined = response.players;
+      let validator = false;
 
-    let allJoined = response.players;
-    let validator = false;
+      allJoined.forEach(element => {
+        if (element.toString() === player.toString()) {
+          validator = true;
+        }
+      });
 
-    allJoined.forEach(element => {
-      if(element.toString() === player.toString()){
-        validator = true;
-      };
+      if (
+        response.owner.toString() === player.toString() ||
+        validator === true
+      ) {
+        res.redirect(`/event/${eventID}`);
+      } else {
+        User.findById(player)
+          .then(answer => {
+            Events.update({ _id: eventID }, { $push: { players: answer } })
+              .then(success => console.log(success))
+              .catch(err => console.log(err));
+          })
+          .catch(err => console.log(err));
+        res.redirect(`/event/${eventID}`);
+      }
     });
+  }
+);
 
-    if(response.owner.toString() === player.toString() || validator === true){
-      res.redirect(`/event/${eventID}`)
-    } else {
-      User.findById(player).then(answer => {
-      
-      Events.update({_id: eventID}, {$push: { players:  answer }})
-      .then(success => console.log(success))
-      .catch(err => console.log(err))
-
-      }).catch(err => console.log(err));
-      res.redirect(`/event/${eventID}`)
-    }
-
-  });
-
-});
 
 // router that add comments in events
 authRoutes.post('/addcomment', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
@@ -341,5 +403,6 @@ authRoutes.get('/get-address', ensureLogin.ensureLoggedIn('/login'), (req, res) 
   });
 
 });
+
 
 module.exports = authRoutes;

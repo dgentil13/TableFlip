@@ -1,7 +1,8 @@
-
 function startMap() {
+
   const geocoder = new google.maps.Geocoder();
   const infowindow = new google.maps.InfoWindow();
+
   // Store Ironhack's coordinates
   const Brazil = { lat: -11.409874,  lng: -41.280857 };
 
@@ -34,15 +35,22 @@ function startMap() {
         }
     });
   };
-      
+
+  const peopleList = document.getElementById('people-list');
+  let people =``;
+
   axios.get('http://localhost:3000/get-address')
   .then(response => {
       response.data.forEach(element => {
+        people += `<h4> ${element.firstName} ${element.lastName} </h4>`;
           if(element.address){
             geocodeAddress(geocoder, map, element);
           }
       });
+      peopleList.innerHTML = people;
   });
+
+
 
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function (position) {

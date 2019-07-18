@@ -291,3 +291,10 @@ body {
     margin-left: 10%;
   }
 }
+
+.people-list{
+  width: 400px;
+  height: 400px;
+  background-color: red;
+  color: black;
+}
