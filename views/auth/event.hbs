@@ -58,6 +58,7 @@
     <button type="submit">Send</button>
 </form>
 
-
+{{#if event.address}}
 <script src="https://maps.googleapis.com/maps/api/js?key={{GMAPS}}"></script>
 <script type="text/javascript" src="/js/event-map.js"></script>
+{{/if}}
