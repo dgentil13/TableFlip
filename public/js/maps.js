@@ -1,7 +1,7 @@
 function startMap() {
 
   const geocoder = new google.maps.Geocoder();
-  // let infoWindow = new google.maps.infoWindow();
+  const infowindow = new google.maps.InfoWindow();
 
   // Store Ironhack's coordinates
   const Brazil = { lat: -11.409874,  lng: -41.280857 };
@@ -14,15 +14,22 @@ function startMap() {
     }
   );
 
-  function geocodeAddress(geocoder, resultsMap, address) {
+  function geocodeAddress(geocoder, resultsMap, user) {
           
-    geocoder.geocode({ 'address': address }, function (results, status) {
+    geocoder.geocode({ 'address': user.address }, function (results, status) {
     
         if (status === 'OK') {
-        let marker = new google.maps.Marker({
-            map: resultsMap,
-            position: results[0].geometry.location
-        });
+            let marker = new google.maps.Marker({
+                map: resultsMap,
+                position: results[0].geometry.location
+            });
+
+            const fullName = `${user.firstName} ${user.lastName} <br> ${user.email}`;
+
+            google.maps.event.addListener(marker, "click", function() {
+                infowindow.setContent(fullName);
+                infowindow.open(map, this);
+            });
         } else {
         alert('Geocode was not successful for the following reason: ' + status);
         }
@@ -37,7 +44,7 @@ function startMap() {
       response.data.forEach(element => {
         people += `<h4> ${element.firstName} ${element.lastName} </h4>`;
           if(element.address){
-            geocodeAddress(geocoder, map, element.address);
+            geocodeAddress(geocoder, map, element);
           }
       });
       peopleList.innerHTML = people;
