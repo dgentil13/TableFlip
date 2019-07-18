@@ -1,6 +1,6 @@
-
 function startMap() {
-    const geocoder = new google.maps.Geocoder();
+
+  const geocoder = new google.maps.Geocoder();
   // let infoWindow = new google.maps.infoWindow();
 
   // Store Ironhack's coordinates
@@ -28,15 +28,22 @@ function startMap() {
         }
     });
   };
-      
+
+  const peopleList = document.getElementById('people-list');
+  let people =``;
+
   axios.get('http://localhost:3000/get-address')
   .then(response => {
       response.data.forEach(element => {
+        people += `<h4> ${element.firstName} ${element.lastName} </h4>`;
           if(element.address){
             geocodeAddress(geocoder, map, element.address);
           }
       });
+      peopleList.innerHTML = people;
   });
+
+
 
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function (position) {
