@@ -12,9 +12,11 @@ const eventsSchema = new Schema({
     players : [
         { type: Schema.Types.ObjectId, ref: 'User' }
     ],
-    choosegame: { type: Schema.Types.ObjectId, ref: 'Gameboard' }
-    ,
+    choosegame: { type: Schema.Types.ObjectId, ref: 'Gameboard' },
+    cardGameName: String,
     numberplayers: Number,
+    address: String,
+    date: String,
     comments: [
         { type: Schema.Types.ObjectId, ref: 'Comments' }
       ],
