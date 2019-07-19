@@ -28,18 +28,13 @@ function startMap() {
           infowindow.open(map, this);
         });
       } else {
-        alert("Geocode was not successful for the following reason: " + status);
+        console.log("Geocode was not successful for the following reason: " + status);
       }
     });
   }
 
   const peopleList = document.getElementById("people-list");
   let people = ``;
-        // <div class="media-body media-custom col-lg-6 col-md-6 col-sm-12 col-12" >
-        //   <h5 class="mt-1 mb-1">FIVE REASONS WHY I PLAY MODERN BOARD GAMES, AND WHY YOU SHOULD TOO</h5>
-        //   More and more adults are jumping into the phenomenon of modern board games. As the hobby gets bigger and bigger, it’s important to look at an important question. WHY do we play modern games?
-        // </div>
-      // </li>
 
   axios.get("http://localhost:3000/get-address").then(response => {
     let count = 1;
@@ -51,9 +46,8 @@ function startMap() {
                    <div>
                       <h4 class="text-uppercase"> ${element.firstName} ${element.lastName}</h4>
                       <button type="button" class="btn btn-primary btn-sign mt-4" data-toggle="modal" data-target="#modalExemplo${count}"> Send Email! </button>
-                      </div>
-                      
-                </div>
+                    </div>   
+                 </div>
                     
                     <!-- Modal -->
                     <div class="modal fade" id="modalExemplo${count}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -113,9 +107,6 @@ function startMap() {
           map: map,
           title: "You are here."
         });
-      },
-      function() {
-        console.log("Error in the geolocation service.");
       }
     );
   } else {
