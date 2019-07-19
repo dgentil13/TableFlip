@@ -36,7 +36,7 @@ function startMap() {
   const peopleList = document.getElementById("people-list");
   let people = ``;
 
-  axios.get("http://localhost:3000/get-address").then(response => {
+  axios.get("https://tableflips.herokuapp.com/get-address").then(response => {
     response.data.forEach(element => {
       if (element.address) {
         people += `<h4> ${element.firstName} ${element.lastName}</h4>

@@ -3,7 +3,7 @@ let typegame =  document.getElementById('typegameboard');
 let selec = `<option selected value="none"> Choose one (If not, all boardgames will comeback!): </option>`;
 
 window.onload = () => {
-    axios.get('http://localhost:3000/getgames')
+    axios.get('https://tableflips.herokuapp.com/getgames')
     .then(response => {
         response.data.forEach(element => {
             selec += `<option value="${element._id}"> ${element.name} </option>`;
