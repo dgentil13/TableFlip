@@ -1,62 +1,144 @@
 <style>
     #map {
-    height: 500px;
-    width: 100%;
+        height: 300px;
+        width: 100%;
     }
 </style>
 <input type="text" id="addressMap" value="{{event.address}}" hidden>
-<p>{{event.title}}</p>
-<p>{{event.type}}</p>
-<p>{{event.description}}</p>
-<p>{{event.address}}</p>
-<p>{{event.date}}</p>
-{{#if event.choosegame}}
-<p>{{event.choosegame.name}}</p>
-<img src="{{event.choosegame.image_url}}" alt="{{event.choosegame.name}}">
-<p>{{event.choosegame.description}}</p>
-<p>{{event.choosegame.numbermin}}</p>
-<p>{{event.choosegame.numbermax}}</p>
-<p>{{event.choosegame.time}}</p>
-{{/if}}
 
-{{#if event.cardGameName}}
-<p>{{event.cardGameName}}</p>
-{{/if}}
-<p>{{event.owner.firstName}} {{event.owner.lastName}}</p>
-<p>{{event.owner.email}}</p>
-<p>{{event.numberplayers}}</p>
-<p>{{count}}</p>
-{{#if event.players}}
-<p>Players :</p>
-{{/if}}
-{{#each event.players}}
-    <p>{{this.firstName}} {{this.lastName}}</p>
-    <p>{{this.email}}</p>
-{{/each}}
+<section class="container">
+    <div class="event-one pt-4">
 
-{{#if validator}}
-<a href="/join/{{event.id}}/{{logged}}">Join</a>
-{{/if}}
+        <h4 class=" text-center font-weight-bold text-uppercase mt-3"> {{event.title}}</h4>
+        <div class="row d-flex justify-content-end">
 
-{{#if ownerValidator}}
-<button><a href="/edit-event/{{event.id}}">Edit</a></button>
-<button><a href="/delete-event/{{event.id}}">Delete</a></button>
-{{/if}}
-<p>Comments:</p>
-{{#each event.comments}}
-    <p>{{this.owner.firstName}} {{this.owner.lastName}}</p>
-    <p>{{this.owner.email}}</p>
-    <p>{{this.description}}</p>
-{{/each}}
-{{#if event.address}}
-<div id="map"></div>
-{{/if}}
-<form action="/addcomment" method="POST">
-    <input type="text" name="eventID" value={{event.id}} hidden>
-    <label for="comment"> Comment: </label>
-    <input type="text" name="comment">
-    <button type="submit">Send</button>
-</form>
+
+            {{#if validator}}
+
+            <button type="submit" class="btn btn-primary btn-event"><a href="/join/{{event.id}}/{{logged}}">Join</a></button>
+
+            {{/if}}
+        </div>
+        <div class="row">
+            {{!-- INFO --}}
+            <div class="col-lg-8">
+                <p>{{event.description}}</p>
+               <p> {{event.type}} </p>
+                
+
+
+                <div class="accordion acc-custom mb-4" id="accordionExample">
+                    <div class="card">
+                        <div class="card-header text-center" id="headingOne">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link game-info text-uppercase" type="button" data-toggle="collapse"
+                                    data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Game Info
+                                </button>
+                            </h5>
+                        </div>
+
+                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
+                            data-parent="#accordionExample">
+                            <div class="card-body">
+
+                                {{#if event.choosegame}}
+                                <h5 class="text-uppercase text-center">{{event.choosegame.name}}</h5>
+                                <img class="game-img" src="{{event.choosegame.image_url}}" alt="{{event.choosegame.name}}">
+                                <p class="mt-4 mb-3">{{event.choosegame.description}}</p>
+                               <div class=" ml-5 row">
+                                <p class="mr-4"> Min Players: {{event.choosegame.numbermin}}</p>
+                                <p class="mr-4">Max Players: {{event.choosegame.numbermax}}</p>
+                                <p class="mr-4">Game Time: {{event.choosegame.time}}</p>
+                                </div>
+                                {{/if}}
+
+                                {{#if event.cardGameName}}
+                                <p class="mr-4">{{event.cardGameName}}</p>
+                                {{/if}}
+
+                                  {{#if event.tabletoprpg}}
+                                <p class="mr-4">RPG</p>
+                                {{/if}}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{#if event.players}}
+                <div>
+                    <h5 class="text-uppercase text-center participants"> Participants</h5>
+
+
+                    {{#each event.players}}
+                    <div class="row">                   
+                     <div class="card ml-3 p-3">
+                    <p> Name: {{this.firstName}} {{this.lastName}}</p>
+                    <p>Email: {{this.email}}</p>
+                    </div>
+                    </div>
+                    {{/each}}
+                </div>
+                {{/if}}
+                <div class="d-flex flex-column text-center owner">
+                    <h6> owner</h6>
+                    <div class="row align-self-center">
+                        <p class="mr-4">Name: {{event.owner.firstName}} {{event.owner.lastName}}</p>
+                        <p> Email: {{event.owner.email}}</p>
+                    </div>
+                </div>
+                <div class="comments col">
+                    {{#if ownerValidator}}
+            <button class="btn btn-primary btn-sign btn-event"><a href="/edit-event/{{event.id}}">Edit</a></button>
+            <button class="btn btn-primary btn-sign btn-event"><a href="/delete-event/{{event.id}}">Delete</a></button>
+
+
+                    {{/if}}
+                    <h5 class="text-center">Comments</h5>
+                    <div class="d-flex flex-column">
+                        <label for="comment"> Write a comment: </label>
+                        <form action="/addcomment" method="POST">
+                            <input type="text" name="eventID" value={{event.id}} hidden>
+                            <textarea class="col-lg-12" type="text" name="comment"> </textarea>
+                            <br>
+                            <button type="submit" class="btn btn-primary  btn-event">Send</button>
+
+                        </form>
+                    </div>
+                    {{#each event.comments}}
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <p>{{this.owner.firstName}} {{this.owner.lastName}}</p>
+                            {{!-- <p>{{this.owner.email}}</p> --}}
+                            <p>{{this.description}}</p>
+                        </div>
+                    </div>
+                    {{/each}}
+                    {{#if event.address}}
+                    {{/if}}
+                </div>
+            </div>
+            {{!-- PLACE DATE --}}
+            <div class="col-lg-4 mt-3">
+                <h7 class="d-flex justify-content-center text-uppercase">Address</h7>
+                <p>{{event.address}}</p>
+                <p>{{event.date}}</p>
+                <div id="map"></div>
+                <div class= "text-center mt-5">
+                <h7 class="text-uppercase d-flex justify-content-center"> Number of Participants </h7>
+                <p>{{count}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{{!-- <p>{{event.numberplayers}}</p> --}}
+
+
+
+
 
 {{#if event.address}}
 <script src="https://maps.googleapis.com/maps/api/js?key={{GMAPS}}"></script>
