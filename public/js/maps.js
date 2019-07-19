@@ -45,9 +45,9 @@ function startMap() {
         people += `<h4> ${element.firstName} ${element.lastName} </h4>`;
           if(element.address){
             geocodeAddress(geocoder, map, element);
+            peopleList.innerHTML = people;
           }
       });
-      peopleList.innerHTML = people;
   });
 
 
