@@ -28,7 +28,7 @@ function startMap() {
           infowindow.open(map, this);
         });
       } else {
-        alert("Geocode was not successful for the following reason: " + status);
+        console.log("Geocode was not successful for the following reason: " + status);
       }
     });
   }
