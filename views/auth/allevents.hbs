@@ -1,17 +1,28 @@
 <form action="/events" method="POST" class="mt-2 ml-2 mr-2">
-    <div class="input-group">
-        <select class="custom-select col-lg-4" id="type" name="type">
+    <div class="input-group d-flex justify-content-center pt-4">
+       
+       
+       
+        <select class="custom-select col-lg-2 search-input2 mr-3" id="type" name="type">
+            <option value="">Category</option>            
             <option value="boardgame">Board Game</option>
             <option value="cardgame">Card Game</option>
             <option value="tabletoprpg">TableTop RPG</option>
         </select>
-        <select id="typegameboard" name="typegameboard" class="form-control col-lg-4">
+
+
+
+        <select id="typegameboard" name="typegameboard" class="form-control col-lg-2 search-input2 mr-3 ">
         </select>
+
+
         <div class="input-group-append">
-            <button class="btn btn-success" type="submit">Button</button>
+            <button class="btn btn-success btn-event2 icon" type="submit"><i class="fas fa-search"></i></button>
         </div>
+
+
         <div class="input-group-append">
-            <button class="btn btn-danger"> <a href="/events" style="text-decoration: none; color:aliceblue">All Events</a></button>
+            <button class="btn btn-danger btn-event2"> <a href="/events">All</a></button>
         </div>
     </div>
 </form>
@@ -19,13 +30,13 @@
 <br><br>
 <div class="d-flex flex-wrap justify-content-center ">
     {{#each allEvents}}
-    <div class="jumbotron col-lg-3 ml-4 mr-4 bg-dark">
+    <div class="jumbotron shadow col-lg-3 ml-4 mr-4 bg-dark">
         <h1 class="display-4 text-light text-uppercase font-weight-bold">{{title}}</h1>
-        <p class="lead" style="color: #755d0d !important;">{{type}}</p>
-        <hr class="my-4" style="border-color: #755d0d !important;">
+        <p class="lead event-text">{{type}}</p>
+        <hr class="my-4 event-break">
         <p class="text-light">{{description}}</p>
         <p class="lead">
-                <p class="btn btn-outline-light"><a href="/event/{{id}}" style="text-decoration: none; color:#755d0d">See More</a></p>
+        <p class="btn btn-outline-light event-text"><a href="/event/{{id}}">See More</a></p>
         </p>
     </div>
 {{/each}}
