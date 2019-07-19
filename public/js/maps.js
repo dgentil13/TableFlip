@@ -75,6 +75,7 @@ function startMap() {
                     geocodeAddress(geocoder, map, element);
                   });
     peopleList.innerHTML = people;
+
   });
 
   if (navigator.geolocation) {

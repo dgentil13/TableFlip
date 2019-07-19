@@ -1,9 +1,9 @@
 <section class="create-event">
-  <div class="container create-custom  d-flex flex-column justify-content-center align-items-center">
+  <div class="container create-custom2  d-flex flex-column justify-content-center align-items-center">
   <h2>Create Event</h2>
   
   <form action="/createvents" method="POST" id="form-container">
-    <div class="form-group">
+    <div class="form-group ">
       <label for="title">Title</label>
       <input type="text" class="form-control form-size" id="title" name="title"placeholder="write your title here">
     </div>
@@ -12,14 +12,14 @@
       <textarea class="form-control form-size" id="description" name="description" placeholder="write your description here"></textarea>
     </div>
     <div class="form-group">
-      <label for="type">Choose your game type</label>
+      <label for="type" >Choose your game type</label>
       <select id="type" name="type" class="form-control form-size-sel">
         <option value="boardgame">Board Game</option>
         <option value="cardgame">Card Game</option>
         <option value="tabletoprpg">TableTop RPG</option>
       </select>
     </div>
-    <div class="d-flex justify-content-start">
+    <div class="d-flex">
       <div class="form-group">
         <label for="typegameboard" id="typegb">Choose your game type</label>
         <select id="typegameboard" name="typegameboard" class="form-control form-size-sel1">
