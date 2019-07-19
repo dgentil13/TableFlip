@@ -1,0 +1,41 @@
+<section class="edit-form">
+  <div class="container edit-custom d-flex flex-column justify-content-center mt-5 pt-3">
+  <h2 class="text-center">Profile</h2>
+
+    <form action="/profile/edit/{{profile._id}}" method="post" enctype="multipart/form-data">
+      <div class="sign-input form-group">
+        <label for="Name">Name</label>
+        <div class="d-flex justify-content-start">
+
+          <input type="text" name="firstName" class=" col-lg-6 input-form form-control" value="{{profile.firstName}}">
+          <input type="text" name="lastName" class=" col-lg-6 input-form form-control" value="{{profile.lastName}}">
+        </div>
+      </div>
+
+      <div class="sign-input form-group">
+        <label for="image">Image</label>
+        <input type="file" name="image" class="btn-sign">
+      </div>
+
+
+      <div class="sign-input form-group">
+        <label for="description">Description</label>
+        <textarea type="text" name="description" class="input-form form-control">{{profile.description}}</textarea>
+
+      </div>
+
+      <div class="sign-input form-group">
+        <label for="exampleInputEmail1">Email</label>
+        <input id="email" class="input-form form-control" type="text" name="email" value="{{profile.email}}">
+      </div>
+
+      <div class="sign-input form-group">
+        <label for="address">Address</label>
+        <input id="address" class="input-form form-control" type="text" value="{{profile.address}}">
+      </div>
+
+        <button type="submit" class=" text-center btn btn-primary btn-edit btn-sign">Edit</button>
+
+    </form>
+  </div>
+</section>

@@ -10,7 +10,7 @@ const session = require("express-session");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
+const GoogleStrategy = require("passport-google-oauth2").Strategy;
 const MongoStore = require("connect-mongo")(session);
 
 //routes
@@ -65,6 +65,7 @@ passport.deserializeUser((id, cb) => {
   });
 });
 
+// Normal Login
 passport.use(
   new LocalStrategy(
     { passReqToCallback: true },
@@ -79,44 +80,47 @@ passport.use(
         if (!bcrypt.compareSync(password, user.password)) {
           return next(null, false, { message: "Incorrect password" });
         }
-
+        if (user.status === "Pending") {
+          return next(null, false, { message: "Please confirm your email" });
+        }
         return next(null, user);
       });
     }
   )
 );
+// Google Login 
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_OAUTH_CLIENTID,
+      clientSecret: process.env.GOOGLE_OAUTH_SECRET,
+      callbackURL: "/google/callback"
+    },
+    (accessToken, refreshToken, profile, done) => {
+      User.findOne({ googleID: profile.id })
+        .then(user => {
+          if (user) {
+            return done(null, user);
+          }
 
-passport.use(new GoogleStrategy({
-  clientID: process.env.GOOGLE_OAUTH_CLIENTID,
-  clientSecret: process.env.GOOGLE_OAUTH_SECRET,
-  callbackURL: "/google/callback"
-}, (accessToken, refreshToken, profile, done) => {
- 
-  console.log(profile)
-  User.findOne({ googleID: profile.id})
-  .then(user => {
-    if (user) {
-      return done(null, user);
+          const newUser = new User({
+            googleID: profile.id,
+            firstName: profile.name.givenName,
+            lastName: profile.name.familyName,
+            email: profile.email
+          });
+
+          newUser.save().then(user => {
+            done(null, newUser);
+          });
+        })
+        .catch(error => {
+          done(error);
+        });
     }
+  )
+);
 
-    const newUser = new User({
-      googleID: profile.id,
-      firstName: profile.name.givenName,
-      lastName: profile.name.familyName,
-      email: profile.email
-    });
-
-    newUser.save()
-    .then(user => {
-      done(null, newUser);
-    })
-  })
-  .catch(error => {
-    done(error)
-  })
-
-}));
-  
 app.use(passport.initialize());
 app.use(passport.session());
 

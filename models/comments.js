@@ -2,8 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const commentsSchema = new Schema({
-    title: String,
-    owner: Schema.Types.ObjectId,
+    owner: { type: Schema.Types.ObjectId, ref: 'User' },
     description: String,
 }, {
     timestamps: true
