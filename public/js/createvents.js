@@ -4,7 +4,7 @@ let typegb = document.getElementById('typegb');
 let selec = ``;
 
 window.onload = () => {
-    axios.get('https://tableflips.herokuapp.com/getgames')
+    axios.get('http://tableflips.herokuapp.com/getgames')
     .then(response => {
         response.data.forEach(element => {
             selec += `<option value="${element._id}"> ${element.name} </option>`;
