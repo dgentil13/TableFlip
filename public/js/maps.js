@@ -98,9 +98,6 @@ function startMap() {
           map: map,
           title: "You are here."
         });
-      },
-      function() {
-        console.log("Error in the geolocation service.");
       }
     );
   } else {
