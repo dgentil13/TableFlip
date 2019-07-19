@@ -51,7 +51,6 @@ app.use(
   })
 );
 
-// user serialization
 passport.serializeUser((user, cb) => {
   cb(null, user._id);
 });
