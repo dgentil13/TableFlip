@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free.min.css">
+
 </head>
 
 <body>
@@ -29,8 +31,8 @@
                         Events
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/events">Find Events</a>
                         <a class="dropdown-item" href="/createvents">Create Events</a>
-                        <a class="dropdown-item" href="/events">Join Events</a>
                     </div>
                 </li>
                 <a class="nav-item nav-link li-custom" href="/findfriends">Players</a>
@@ -42,11 +44,11 @@
         <div class="dropdown col-md-2 navbar-collapse">
             <button class="btn d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3 profile-button dropdown-toggle" type="button"
                 id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="far fa-user-circle"></i>
+                <i class="far fa-user-circle pr-1"></i>
                 PROFILE
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="/profile/{{user._id}}">Settings</a>
+                <a class="dropdown-item" href="/profile/{{user._id}}">Profile</a>
                 <a class="dropdown-item" href="/logout">Log Out</a>
             </div>
         </div>

@@ -5,62 +5,6 @@ html {
 body {
   padding-top: 55px;
 }
-/* .navbar {
-  width: 100%;
-  background-color: #333;
-  margin: 0;
-  padding: 0;
-  font-size: 1em;
-  overflow: hidden;
-  position: fixed;
-  top: 0;
-  display: flex;
-  flex-wrap: wrap;
-  padding-left: 10px;
-  padding-right: 10px;
-  text-transform: uppercase;
-}
-.ul-nav {
-  list-style-type: none;
-  margin: 0 auto;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.signup {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-.logo {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  color: crimson;
-  font-size: 1.2em;
-  margin-top: 15px;
-}
-
-.li-nav a,
-.signup a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 20px 16px;
-  text-decoration: none;
-  background-color: transparent;
-  background-size: 0;
-  transition: all 0.3s ease-in-out;
-}
-
-.li-nav a:hover,
-.signup a:hover {
-  background-color: #111;
-  background-size: 100%;
-} */
-
 /* FRONT-PAGE */
 .navbar {
   padding: 0px 30px;
@@ -81,7 +25,7 @@ body {
   transition: all 0.5s ease-in-out;
 }
 .li-custom:hover {
-  background-color: #664f01;
+  background-color: #755d0d;
 }
 
 .sign-up {
@@ -95,8 +39,11 @@ body {
   background-color: #755d0d;
 }
 
+.brand-table {
+  color: #c99e10;
+}
 /* navbar extra  */
-.profile-button{
+.profile-button {
   color: white;
   border-top: 0px;
   border-left: 0px;
@@ -147,17 +94,20 @@ body {
 }
 /* features */
 .features {
-  height: 40vh;
   background-color: white;
 }
+.card-home {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
 .align-features {
-  padding-top: 5%;
+  padding: 5% 0;
 }
 /* about */
 .about {
   padding-top: 2%;
   padding-bottom: 2%;
   background-color: dimgray;
+  color: white;
 }
 /* END FRONT PAGE */
 
@@ -252,7 +202,6 @@ body {
 }
 .card-custom {
   border: 0px;
-  width: 30% !important;
   box-shadow: 0 4px 8px 0 rgba(253, 222, 43, 0.1),
     0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
@@ -261,7 +210,17 @@ body {
   border-bottom: 1px solid rgba(46, 45, 43, 0.4);
 }
 .media img {
-  height: 20vh;
+  height: auto;
+  width: auto;
+  max-width: 45%;
+  max-height: 25%;
+}
+
+.card-img {
+  height: auto;
+  width: auto;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 /* EVENTS */
@@ -272,14 +231,13 @@ body {
   width: 50%;
   height: 80vh;
   border-radius: 10px;
-  box-shadow: 0 4px 8px 0 rgba(253, 222, 43, 0.1),0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 4px 8px 0 rgba(253, 222, 43, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .create-custom2 {
   padding: 50px 0;
   border-radius: 10px;
-  box-shadow: 0 4px 8px 0 rgba(253, 222, 43, 0.1),
-    0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 4px 8px 0 rgba(253, 222, 43, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .create-event h2 {
@@ -306,36 +264,38 @@ body {
   margin-left: 10%;
 }
 
-
-/* FIND PEOPLE */
-.people-list{
-  width: 400px;
-  height: 400px;
-  background-color: red;
-  color: black;
+.event-text {
+  color: #c99e10;
 }
-
-/* PROFILE */
-.profile-page{
-  /* background-image: url(/images/gameback.jpg) */
-  box-shadow: 0 4px 8px 0 rgba(253, 222, 43, 0.1),0 20px 50px 0 rgba(0, 0, 0, 0.19);
-  width: 100%;
-
-}
-.profile-main{
-  height:80% ;
-}
-
-.profile-img{
-  height: auto; 
-  width: auto; 
-  max-width: 25%; 
-  max-height: 25%;
-}
-
-.btn-prof a{
+.event-text a {
   text-decoration: none;
-  color: white
+  color: #c99e10;
+}
+.event-break {
+  border: 1px solid #755d0d;
+}
+.shadow {
+  box-shadow: 0 4px 8px 0 rgba(36, 31, 6, 0.1), 0 10px 10px 0 rgba(0, 0, 0, 0.1);
+}
+/* PROFILE */
+.profile-page {
+  /* background-image: url(/images/gameback.jpg) */
+  box-shadow: 0 4px 8px 0 rgba(253, 222, 43, 0.1), 0 20px 50px 0 rgba(0, 0, 0, 0.19);
+  width: 100%;
+}
+.profile-main {
+  height: 80%;
+}
+
+.profile-img {
+  height: auto;
+  width: auto;
+  max-width: 25%;
+}
+
+.btn-prof a {
+  text-decoration: none;
+  color: white;
 }
 .btn-prof {
   background-color: dimgray;
@@ -353,14 +313,14 @@ body {
   border: 1px #c99e10 solid;
 }
 
-/* edit profile */
+/* EDIT PROFILE */
 
- .btn-edit {
+.btn-edit {
   margin-left: 40%;
   margin-top: 5%;
 }
 
-.edit-custom{
+.edit-custom {
   width: 80vh;
   height: 80vh;
   margin-top: 5%;
@@ -373,17 +333,17 @@ body {
   color: #c99e10;
 }
 
-/* event-detail */
-.event-one{
-    margin-top: 3%;
+/* EVENT-DETAILS */
+.event-one {
+  margin-top: 3%;
   margin-bottom: 2%;
   padding: 3% 5%;
   border-radius: 10px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 4px 20px 0 rgba(0, 0, 0, 0.19);
 }
-.btn-event a{
+.btn-event a {
   text-decoration: none;
-  color: white
+  color: white;
 }
 .btn-event {
   background-color: dimgray;
@@ -402,32 +362,104 @@ body {
   border: 1px #c99e10 solid;
 }
 .owner,
-.comments{
+.comments {
   margin-top: 5%;
   padding-top: 3%;
   border-top: 1px solid #c99e10;
 }
 
-
-.game-img{
-  height: auto; 
-  width: auto; 
-  max-width: 20%; 
+.game-img {
+  height: auto;
+  width: auto;
+  max-width: 20%;
   max-height: 20%;
-
 }
-
-.game-info{
+.game-info {
   text-decoration: none;
   color: black;
 }
-.game-info:hover{
+.game-info:hover {
   text-decoration: none;
   color: #c99e10;
 }
-.card-header{
-background-color: lightgray;
+.card-header {
+  background-color: lightgray;
 }
+.img-map {
+  height: auto;
+  width: auto;
+  max-width: 35%;
+}
+.friend {
+  border-bottom: 1px solid #755d0d;
+}
+.container-custom {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 4px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 3% 2% 5% 2%;
+  margin-top: 1%;
+}
+
+.container-custom2 {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 4px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 3% 2% 2% 2%;
+  margin-top: 1%;
+}
+.header-map h3 {
+  color: #c99e10;
+}
+
+.search-input {
+  background-color: lightgray;
+  border: none;
+  border-bottom: 3px solid #c99e10;
+  height: 5vh;
+  width: 30vh;
+  padding: 1%;
+}
+.search-input2 {
+  background-color: lightgray;
+  border: none;
+  border-bottom: 3px solid #c99e10;
+  height: 6.3vh;
+  width: 30vh;
+  padding: 1%;
+}
+
+.search-input2:active {
+  background-color: lightgray;
+}
+
+.btn-event2 a {
+  text-decoration: none;
+  color: black; 
+}
+.btn-event2 {
+  background-color: lightgray;
+  border: 1px lightgray solid;
+  border-radius: 25px;
+  text-transform: uppercase;
+  margin-bottom: 3%;
+  margin-right: 2%;
+  height: 6.3vh;
+}
+.btn-event2:hover {
+  background-color: #c99e10;
+  border: 1px #c99e10 solid;
+}
+.btn-event2:active {
+  background-color: #c99e10 !important;
+  border: 1px #c99e10 solid;
+}
+.icon{
+  color: black;
+}
+.address-text{
+  color: dimgray
+}
+.email-name{
+  margin-left: 30%;
+}
+
 @media only screen and (max-width: 830px) {
   .form-size {
     width: 300px;
