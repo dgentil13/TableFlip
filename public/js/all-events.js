@@ -1,6 +1,6 @@
 let typeChange = document.getElementById('type');
 let typegame =  document.getElementById('typegameboard');
-let selec = ``;
+let selec = `<option selected value="none"> Choose one (If not, all boardgames will comeback!): </option>`;
 
 window.onload = () => {
     axios.get('http://localhost:3000/getgames')
@@ -19,6 +19,7 @@ typeChange.onchange = () => {
     } else if( typeChange.value === 'cardgame'){
       typegame.setAttribute('style','display:inherit;');
       typegame.innerHTML = `
+      <option selected value="none"> Choose one (If not, all cardgames will comeback!): </option>
       <option value="Magic: The Gathering"> Magic The Gathering</option>
       <option value="Yu-Gi-Oh"> Yu-Gi-Oh</option>
       `;

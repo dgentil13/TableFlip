@@ -1,25 +1,53 @@
-<form action="/events" method="POST">
-    <select id="type" name="type" class="form-control form-size-sel">
-        <option value="boardgame">Board Game</option>
-        <option value="cardgame">Card Game</option>
-        <option value="tabletoprpg">TableTop RPG</option>
-    </select>
-    <br>
-    <select id="typegameboard" name="typegameboard">
-    </select>
-    <br><br>
-    <button type="submit"> Search </button>
+<form action="/events" method="POST" class="mt-2 ml-2 mr-2">
+    <div class="input-group">
+        <select class="custom-select col-lg-4" id="type" name="type">
+            <option value="boardgame">Board Game</option>
+            <option value="cardgame">Card Game</option>
+            <option value="tabletoprpg">TableTop RPG</option>
+        </select>
+        <select id="typegameboard" name="typegameboard" class="form-control col-lg-4">
+        </select>
+        <div class="input-group-append">
+            <button class="btn btn-success" type="submit">Button</button>
+        </div>
+        <div class="input-group-append">
+            <button class="btn btn-danger"> <a href="/events" style="text-decoration: none; color:aliceblue">All Events</a></button>
+        </div>
+    </div>
+        {{!-- <div class="d-flex mt-2">
+            <div class="col-lg-3">
+                <select id="type" name="type" class="form-control ">
+                    <option value="boardgame">Board Game</option>
+                    <option value="cardgame">Card Game</option>
+                    <option value="tabletoprpg">TableTop RPG</option>
+                </select>
+            </div>
+            <div class="col-lg-3">
+                <select id="typegameboard" name="typegameboard" class="form-control ">
+                </select>
+            </div>
+            <div class="col-lg-3">
+
+                <button type="submit" class="btn btn-success"> Search </button>
+                <button class="btn btn-danger"> <a href="/events" style="text-decoration: none; color:aliceblue">All Events</a></button>
+            </div>
+        </div> --}}
 </form>
 
-<br>
-<button><a href="/events">All</a></button>
 <br><br>
-{{#each allEvents}}
-<p>{{title}}</p>
-<p>{{type}}</p>
-<p>{{description}}</p>
-<button><a href="/event/{{id}}">See More</a></button>
+<div class="d-flex flex-wrap justify-content-center ">
+    {{#each allEvents}}
+    <div class="jumbotron col-lg-3 ml-4 mr-4 bg-dark">
+        <h1 class="display-4 text-light text-uppercase font-weight-bold">{{title}}</h1>
+        <p class="lead" style="color: #755d0d !important;">{{type}}</p>
+        <hr class="my-4" style="border-color: #755d0d !important;">
+        <p class="text-light">{{description}}</p>
+        <p class="lead">
+                <p class="btn btn-outline-light"><a href="/event/{{id}}" style="text-decoration: none; color:#755d0d">See More</a></p>
+        </p>
+    </div>
 {{/each}}
+</div>
 
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script type="text/javascript" src="/js/all-events.js"></script>

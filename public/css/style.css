@@ -138,8 +138,8 @@ body {
 }
 /* about */
 .about {
-  height: 40vh;
-  padding-top: 5%;
+  padding-top: 2%;
+  padding-bottom: 2%;
   background-color: dimgray;
 }
 /* END FRONT PAGE */
@@ -157,6 +157,14 @@ body {
   border-radius: 10px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+
+.signup-form2 {
+  padding: 5%;
+  margin-top: 5%;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
 .first,
 .last {
   width: 50%;
@@ -227,7 +235,6 @@ body {
 }
 .card {
   border: 0px;
-  height: 50vh;
   width: 30% !important;
   box-shadow: 0 4px 8px 0 rgba(253, 222, 43, 0.1),
     0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -247,6 +254,13 @@ body {
 .create-custom {
   width: 50%;
   height: 70vh;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(253, 222, 43, 0.1),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.create-custom2 {
+  padding: 50px 0;
   border-radius: 10px;
   box-shadow: 0 4px 8px 0 rgba(253, 222, 43, 0.1),
     0 6px 20px 0 rgba(0, 0, 0, 0.19);
