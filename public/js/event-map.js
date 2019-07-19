@@ -2,7 +2,8 @@
 
 function startMap() {
     const addressMap = document.getElementById('addressMap').value;
-    console.log(addressMap);
+  // Autocomplete for input field
+
 
     const geocoder = new google.maps.Geocoder();
     // Store Ironhack's coordinates

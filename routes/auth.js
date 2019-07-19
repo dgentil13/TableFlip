@@ -69,8 +69,7 @@ authRoutes.post("/signup", (req, res) => {
 
     newUser.save()
       .then(() => { 
-        transporter
-          .sendMail({
+        transporter.sendMail({
             from: '"Table Flip! " <table.flip@email.com>',
             to: email,
             subject: `Welcome ${username}!`,
@@ -359,9 +358,7 @@ authRoutes.get("/profile/edit/:profileID", ensureLogin.ensureLoggedIn("/login"),
   }
 );
 
-authRoutes.post("/profile/edit/:profileID", ensureLogin.ensureLoggedIn("/login"),
-  uploadCloud.single("image"),
-  (req, res, next) => {
+authRoutes.post("/profile/edit/:profileID", ensureLogin.ensureLoggedIn("/login"), uploadCloud.single("image"),(req, res, next) => {
     const { firstName, lastName, email, description, address } = req.body;
     
 
@@ -528,7 +525,7 @@ authRoutes.get('/event/:ID', ensureLogin.ensureLoggedIn('/login'), (req, res) =>
 authRoutes.get('/edit-event/:idEvent', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   const user = req.user;
   Events.findById(req.params.idEvent)
-  .then(event => res.render('auth/edit-event', {event, user}))
+  .then(event => res.render('auth/edit-event', {event, user, GMAPS: process.env.GMAPS}))
   .catch(error => console.log(error));
 });
 
@@ -644,6 +641,20 @@ authRoutes.get('/delete-comment/:idEvent/:idComment', ensureLogin.ensureLoggedIn
 authRoutes.get('/findfriends', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   res.render('auth/people', {user: req.user, GMAPS: process.env.GMAPS});
 });
+
+authRoutes.post('/sendemail', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
+  const message = req.body;
+  const user = req.user;
+    transporter.sendMail({
+        from: '"Table Flip!" <table.flip@email.com>',
+        to: message.email,
+        subject: `${user.firstName} has sent you a message!`,
+        text: "Welcome text",
+        html: `${message.message}`
+      })
+      .then(info => res.redirect("/findfriends"), console.log('foi'))
+      .catch(error => console.log(error));
+})
 
 authRoutes.get('/places', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   res.render('auth/places-map', {user: req.user, GMAPS: process.env.GMAPS});

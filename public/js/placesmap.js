@@ -86,6 +86,7 @@ function initMap() {
       }
     });
   }
+
 }
 
 function callback(results, status) {
@@ -107,7 +108,10 @@ function createMarker(place) {
   markers.push(marker);
   // adds info box above marker
   google.maps.event.addListener(marker, "click", function() {
-    infowindow.setContent(place.name);
+  var contentString = `<h5> ${place.name}</h5>
+                      <p> ${place.formatted_address}</p>`
+                      console.log(place)
+    infowindow.setContent(contentString);
     infowindow.open(map, this);
   });
 }

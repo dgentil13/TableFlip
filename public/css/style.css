@@ -95,6 +95,23 @@ body {
   background-color: #755d0d;
 }
 
+/* navbar extra  */
+.profile-button{
+  color: white;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  border-bottom: 1px solid #755d0d;
+  border-radius: 0;
+  background-color: transparent;
+  background-size: 0;
+  transition: all 0.5s ease-in-out;
+}
+
+.profile-button:hover {
+  background-color: #755d0d;
+}
+
 /* section main */
 .main {
   height: 90vh;
@@ -114,8 +131,8 @@ body {
   z-index: 2;
 }
 .btn-custom {
-  background-color: rgb(47, 47, 46);
-  border: 1px rgb(47, 47, 46) solid;
+  background-color: dimgray;
+  border: 1px dimgray solid;
   border-radius: 25px;
   margin-top: 5%;
   text-transform: uppercase;
@@ -174,13 +191,6 @@ body {
   display: flex;
   justify-content: flex-end;
 }
-.btn-sign {
-  background-color: dimgray;
-  border: 1px dimgray solid;
-  border-radius: 25px;
-  text-transform: uppercase;
-  margin-bottom: 3%;
-}
 
 .btn-google {
   background-color: rgb(116, 47, 47);
@@ -200,6 +210,13 @@ body {
 .btn-google:active {
   background-color: dimgray !important;
   border: 1px dimgray solid;
+}
+.btn-sign {
+  background-color: dimgray;
+  border: 1px dimgray solid;
+  border-radius: 25px;
+  text-transform: uppercase;
+  margin-bottom: 3%;
 }
 .btn-sign:hover {
   background-color: #c99e10;
@@ -233,7 +250,7 @@ body {
   padding-left: 10px !important;
   padding-right: 10px !important;
 }
-.card {
+.card-custom {
   border: 0px;
   width: 30% !important;
   box-shadow: 0 4px 8px 0 rgba(253, 222, 43, 0.1),
@@ -253,10 +270,9 @@ body {
 }
 .create-custom {
   width: 50%;
-  height: 70vh;
+  height: 80vh;
   border-radius: 10px;
-  box-shadow: 0 4px 8px 0 rgba(253, 222, 43, 0.1),
-    0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 4px 8px 0 rgba(253, 222, 43, 0.1),0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .create-custom2 {
@@ -290,6 +306,128 @@ body {
   margin-left: 10%;
 }
 
+
+/* FIND PEOPLE */
+.people-list{
+  width: 400px;
+  height: 400px;
+  background-color: red;
+  color: black;
+}
+
+/* PROFILE */
+.profile-page{
+  /* background-image: url(/images/gameback.jpg) */
+  box-shadow: 0 4px 8px 0 rgba(253, 222, 43, 0.1),0 20px 50px 0 rgba(0, 0, 0, 0.19);
+  width: 100%;
+
+}
+.profile-main{
+  height:80% ;
+}
+
+.profile-img{
+  height: auto; 
+  width: auto; 
+  max-width: 25%; 
+  max-height: 25%;
+}
+
+.btn-prof a{
+  text-decoration: none;
+  color: white
+}
+.btn-prof {
+  background-color: dimgray;
+  border: 1px dimgray solid;
+  border-radius: 25px;
+  text-transform: uppercase;
+  margin-bottom: 3%;
+}
+.btn-prof:hover {
+  background-color: #c99e10;
+  border: 1px #c99e10 solid;
+}
+.btn-prof:active {
+  background-color: #c99e10 !important;
+  border: 1px #c99e10 solid;
+}
+
+/* edit profile */
+
+ .btn-edit {
+  margin-left: 40%;
+  margin-top: 5%;
+}
+
+.edit-custom{
+  width: 80vh;
+  height: 80vh;
+  margin-top: 5%;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.edit-form h2 {
+  padding-bottom: 5%;
+  text-transform: uppercase;
+  color: #c99e10;
+}
+
+/* event-detail */
+.event-one{
+    margin-top: 3%;
+  margin-bottom: 2%;
+  padding: 3% 5%;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 4px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.btn-event a{
+  text-decoration: none;
+  color: white
+}
+.btn-event {
+  background-color: dimgray;
+  border: 1px dimgray solid;
+  border-radius: 25px;
+  text-transform: uppercase;
+  margin-bottom: 3%;
+  margin-right: 2%;
+}
+.btn-event:hover {
+  background-color: #c99e10;
+  border: 1px #c99e10 solid;
+}
+.btn-event:active {
+  background-color: #c99e10 !important;
+  border: 1px #c99e10 solid;
+}
+.owner,
+.comments{
+  margin-top: 5%;
+  padding-top: 3%;
+  border-top: 1px solid #c99e10;
+}
+
+
+.game-img{
+  height: auto; 
+  width: auto; 
+  max-width: 20%; 
+  max-height: 20%;
+
+}
+
+.game-info{
+  text-decoration: none;
+  color: black;
+}
+.game-info:hover{
+  text-decoration: none;
+  color: #c99e10;
+}
+.card-header{
+background-color: lightgray;
+}
 @media only screen and (max-width: 830px) {
   .form-size {
     width: 300px;
@@ -304,11 +442,4 @@ body {
     width: 50px;
     margin-left: 10%;
   }
-}
-
-.people-list{
-  width: 400px;
-  height: 400px;
-  background-color: red;
-  color: black;
 }
