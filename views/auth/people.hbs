@@ -1,0 +1,25 @@
+<section>
+    <div class="container container-custom text-left">
+        <style>
+            #map {
+                height: 60vh;
+                width: 100%;
+            }
+        </style>
+        <div class="pb-5 header-map text-center"> 
+            <h3 class="text-uppercase">Find Players Nearby</h3>
+        </div>
+        <div class="row">
+            <div class="d-flex justify-content-center flex-wrap col-lg-8">
+            <p class="address-text">Include your address in your profile page to join</p>
+                <div id="map"></div>
+            </div>
+
+            <div class="people-list col-lg-4 mt-5" id="people-list">
+            </div>
+        </div>
+    </div>
+</section>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{GMAPS}}"></script>
+<script type="text/javascript" src="/js/maps.js"></script>

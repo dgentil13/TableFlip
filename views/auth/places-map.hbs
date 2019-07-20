@@ -1,0 +1,22 @@
+<div class="container container-custom2 text-center">
+
+    <style>
+        #map {
+            height: 60vh;
+            width: 100%;
+        }
+    </style>
+    <div class="pb-5 header-map">
+        <h3 class="text-uppercase">Find Stores and Places to play</h3>
+    </div>
+
+
+    <input type="text"  class="search-input text-center" id="address">
+    <button onclick="deleteMarkers()" class= "btn-sign magnifying ml-3" type="submit" id="submit"><i class="fas fa-search"></i></button>
+    
+    <div id="map" class="mt-3"></div>
+
+
+</div>
+<script src="https://maps.googleapis.com/maps/api/js?key={{GMAPS}}&libraries=places">  </script>
+<script type="text/javascript" src="/js/placesmap.js"></script>

@@ -1,0 +1,41 @@
+<section class="create-event">
+  <div class="container create-custom2  d-flex flex-column justify-content-center align-items-center">
+  <h2>Create Event</h2>
+  
+  <form action="/createvents" method="POST" id="form-container">
+    <div class="form-group ">
+      <label for="title">Title</label>
+      <input type="text" class="form-control input-form form-size" id="title" name="title"placeholder="write your title here">
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea class="form-control  input-form form-size" id="description" name="description" placeholder="write your description here"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="type" >Choose your game type</label>
+      <select id="type" name="type" class="form-control  input-form form-size-sel">
+        <option value="boardgame">Board Game</option>
+        <option value="cardgame">Card Game</option>
+        <option value="tabletoprpg">TableTop RPG</option>
+      </select>
+    </div>
+    <div class="d-flex">
+      <div class="form-group">
+        <label for="typegameboard" id="typegb">Choose your game type</label>
+        <select id="typegameboard" name="typegameboard" class="form-control  input-form form-size-sel1">
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="title">N of Players</label>
+        <input type="number" class="form-control   input-form input-form form-size-num" id="numberofplayers" name="numberplayers" placeholder="0">
+      </div>
+    </div>
+      <label class=" d-flex align-self-center"> You can add location and date to your event later!</label>
+      <button type="submit" class="btn btn-primary btn-sign btn-create-event">Create</button>
+  
+  </form>
+</div>
+</section>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="text/javascript" src="/js/createvents.js"></script>

@@ -1,10 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User');
+const passport = require('passport');
 const ensureLogin = require('connect-ensure-login');
 
-router.get('/', (req, res) => {
-    res.render('index');
-});
+//models
+const User = require('../models/user');
 
+router.get('/', ensureLogin.ensureLoggedOut('/home'),(req, res) => {
+    res.render('index');
+  });
+  
 module.exports = router;
