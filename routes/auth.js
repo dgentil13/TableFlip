@@ -67,6 +67,7 @@ authRoutes.post("/signup", (req, res) => {
       lastName: lastName
     });
 
+    // Saves the user information and sends the confirmation email (template for email included)
     newUser.save()
       .then(() => { 
         transporter.sendMail({
@@ -75,202 +76,182 @@ authRoutes.post("/signup", (req, res) => {
             subject: `Welcome ${username}!`,
             text: "Welcome text",
             html: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TableFlip Confirm Email</title>
+                   <html xmlns="http://www.w3.org/1999/xhtml">
+                    <head>
+                      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+                      <meta name="viewport" content="width=device-width, initial-scale=1" />
+                      <title>TableFlip Confirm Email</title>
 
-  <style type="text/css">
-  @import url(http://fonts.googleapis.com/css?family=Droid+Sans);
+                      <style type="text/css">
+                        @import url(http://fonts.googleapis.com/css?family=Droid+Sans);
+                        img {
+                          max-width: 600px;
+                          outline: none;
+                          text-decoration: none;
+                          -ms-interpolation-mode: bicubic;
+                        }
+                        a {
+                          text-decoration: none;
+                          border: 0;
+                          outline: none;
+                          color: #bbbbbb;
+                        }
+                        a img {
+                          border: none;
+                        }
+                        td, h1, h2, h3  {
+                          font-family: Helvetica, Arial, sans-serif;
+                          font-weight: 400;
+                        }
+                        td {
+                          text-align: center;
+                        }
+                        body {
+                          -webkit-font-smoothing:antialiased;
+                          -webkit-text-size-adjust:none;
+                          width: 100%;
+                          height: 100%;
+                          color: #37302d;
+                          background: #ffffff;
+                          font-size: 16px;
+                        }
+                        table {
+                          border-collapse: collapse !important;
+                        }
+                        .headline {
+                          color: #ffffff;
+                          font-size: 36px;
+                        }
+                        .force-full-width {
+                          width: 100% !important;
+                        }
+                        .force-width-80 {
+                          width: 80% !important;
+                        }
+                      </style>
 
+                      <style type="text/css" media="screen">
+                          @media screen {
+                            /*Thanks Outlook 2013! http://goo.gl/XLxpyl*/
+                            td, h1, h2, h3 {
+                              font-family: 'Droid Sans', 'Helvetica Neue', 'Arial', 'sans-serif' !important;
+                            }
+                          }
+                      </style>
 
-  img {
-    max-width: 600px;
-    outline: none;
-    text-decoration: none;
-    -ms-interpolation-mode: bicubic;
-  }
+                      <style type="text/css" media="only screen and (max-width: 480px)">
+                        /* Mobile styles */
+                        @media only screen and (max-width: 480px) {
+                          table[class="w320"] {
+                            width: 320px !important;
+                          }
+                          td[class="mobile-block"] {
+                            width: 100% !important;
+                            display: block !important;
+                          }
+                        }
+                      </style>
+                    </head>
+                  <body class="body" style="padding:0; margin:0; display:block; background:#ffffff; -webkit-text-size-adjust:none" bgcolor="#ffffff">
+                  <table align="center" cellpadding="0" cellspacing="0" class="force-full-width" height="100%" >
+                    <tr>
+                      <td align="center" valign="top" bgcolor="#ffffff"  width="100%">
+                        <center>
+                          <table style="margin: 0 auto;" cellpadding="0" cellspacing="0" width="600" class="w320">
+                            <tr>
+                              <td align="center" valign="top">
 
-  a {
-    text-decoration: none;
-    border: 0;
-    outline: none;
-    color: #bbbbbb;
-  }
+                                  <table style="margin: 0 auto;" cellpadding="0" cellspacing="0" class="force-full-width" style="margin:0 auto;">
+                                    <tr>
+                                      <td style="font-size: 30px; text-align:center;">
+                                        <br>
+                                          TableFlip!
+                                        <br>
+                                        <br>
+                                      </td>
+                                    </tr>
+                                  </table>
 
-  a img {
-    border: none;
-  }
+                                  <table style="margin: 0 auto;" cellpadding="0" cellspacing="0" class="force-full-width" bgcolor="#4dbfbf">
+                                    <tr>
+                                      <td>
+                                      <br>
+                                        <img src="https://www.filepicker.io/api/file/carctJpuT0exMaN8WUYQ" width="224" height="240" alt="robot picture">
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td class="headline">
+                                        Good News!
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td>
 
+                                        <center>
+                                          <table style="margin: 0 auto;" cellpadding="0" cellspacing="0" width="60%">
+                                            <tr>
+                                              <td style="color:#187272;">
+                                              <br>
+                                              Your account has been created, now you only have to confirm the email to have access to login!
+                                              <br>
+                                              <br>
+                                              </td>
+                                            </tr>
+                                          </table>
+                                        </center>
 
-  td, h1, h2, h3  {
-    font-family: Helvetica, Arial, sans-serif;
-    font-weight: 400;
-  }
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td>
+                                        <div>
+                                              <a href="https://tableflips.herokuapp.com/confirm/${confirmationCode}"
+                                        style="background-color:#178f8f;border-radius:4px;color:#ffffff;display:inline-block;font-family:Helvetica, Arial, sans-serif;font-size:16px;font-weight:bold;line-height:50px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;">Confirm Here</a>
+                                      </div>
+                                        <br>
+                                        <br>
+                                      </td>
+                                    </tr>
+                                  </table>
 
-  td {
-    text-align: center;
-  }
-
-  body {
-    -webkit-font-smoothing:antialiased;
-    -webkit-text-size-adjust:none;
-    width: 100%;
-    height: 100%;
-    color: #37302d;
-    background: #ffffff;
-    font-size: 16px;
-  }
-
-   table {
-    border-collapse: collapse !important;
-  }
-
-  .headline {
-    color: #ffffff;
-    font-size: 36px;
-  }
-
- .force-full-width {
-  width: 100% !important;
- }
-
- .force-width-80 {
-  width: 80% !important;
- }
-
-
-
-
-  </style>
-
-  <style type="text/css" media="screen">
-      @media screen {
-         /*Thanks Outlook 2013! http://goo.gl/XLxpyl*/
-        td, h1, h2, h3 {
-          font-family: 'Droid Sans', 'Helvetica Neue', 'Arial', 'sans-serif' !important;
-        }
-      }
-  </style>
-
-  <style type="text/css" media="only screen and (max-width: 480px)">
-    /* Mobile styles */
-    @media only screen and (max-width: 480px) {
-
-      table[class="w320"] {
-        width: 320px !important;
-      }
-
-      td[class="mobile-block"] {
-        width: 100% !important;
-        display: block !important;
-      }
-
-
-    }
-  </style>
-</head>
-<body class="body" style="padding:0; margin:0; display:block; background:#ffffff; -webkit-text-size-adjust:none" bgcolor="#ffffff">
-<table align="center" cellpadding="0" cellspacing="0" class="force-full-width" height="100%" >
-  <tr>
-    <td align="center" valign="top" bgcolor="#ffffff"  width="100%">
-      <center>
-        <table style="margin: 0 auto;" cellpadding="0" cellspacing="0" width="600" class="w320">
-          <tr>
-            <td align="center" valign="top">
-
-                <table style="margin: 0 auto;" cellpadding="0" cellspacing="0" class="force-full-width" style="margin:0 auto;">
-                  <tr>
-                    <td style="font-size: 30px; text-align:center;">
-                      <br>
-                        TableFlip!
-                      <br>
-                      <br>
-                    </td>
-                  </tr>
-                </table>
-
-                <table style="margin: 0 auto;" cellpadding="0" cellspacing="0" class="force-full-width" bgcolor="#4dbfbf">
-                  <tr>
-                    <td>
-                    <br>
-                      <img src="https://www.filepicker.io/api/file/carctJpuT0exMaN8WUYQ" width="224" height="240" alt="robot picture">
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="headline">
-                      Good News!
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-
-                      <center>
-                        <table style="margin: 0 auto;" cellpadding="0" cellspacing="0" width="60%">
-                          <tr>
-                            <td style="color:#187272;">
-                            <br>
-                             Your account has been created, now you only have to confirm the email to have access to login!
-                            <br>
-                            <br>
-                            </td>
-                          </tr>
-                        </table>
+                                  <table style="margin: 0 auto;" cellpadding="0" cellspacing="0" class="force-full-width" bgcolor="#414141" style="margin: 0 auto">
+                                    <tr>
+                                      <td style="background-color:#414141;">
+                                      <br>
+                                      <br>
+                                        <img src="https://www.filepicker.io/api/file/R4VBTe2UQeGdAlM7KDc4" alt="google+">
+                                        <img src="https://www.filepicker.io/api/file/cvmSPOdlRaWQZnKFnBGt" alt="facebook">
+                                        <img src="https://www.filepicker.io/api/file/Gvu32apSQDqLMb40pvYe" alt="twitter">
+                                        <br>
+                                        <br>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td style="color:#bbbbbb; font-size:12px;">
+                                        <a href="#">View in browser</a> | <a href="#">Unsubscribe</a> | <a href="#">Contact</a>
+                                        <br><br>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td style="color:#bbbbbb; font-size:12px;">
+                                        © 2019 All Rights Reserved
+                                        <br>
+                                        <br>
+                                      </td>
+                                    </tr>
+                                  </table>
+                              </td>
+                            </tr>
+                          </table>
                       </center>
-
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div>
-                            <a href="https://tableflips.herokuapp.com/confirm/${confirmationCode}"
-                      style="background-color:#178f8f;border-radius:4px;color:#ffffff;display:inline-block;font-family:Helvetica, Arial, sans-serif;font-size:16px;font-weight:bold;line-height:50px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;">Confirm Here</a>
-                    </div>
-                      <br>
-                      <br>
-                    </td>
-                  </tr>
-                </table>
-
-                <table style="margin: 0 auto;" cellpadding="0" cellspacing="0" class="force-full-width" bgcolor="#414141" style="margin: 0 auto">
-                  <tr>
-                    <td style="background-color:#414141;">
-                    <br>
-                    <br>
-                      <img src="https://www.filepicker.io/api/file/R4VBTe2UQeGdAlM7KDc4" alt="google+">
-                      <img src="https://www.filepicker.io/api/file/cvmSPOdlRaWQZnKFnBGt" alt="facebook">
-                      <img src="https://www.filepicker.io/api/file/Gvu32apSQDqLMb40pvYe" alt="twitter">
-                      <br>
-                      <br>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="color:#bbbbbb; font-size:12px;">
-                      <a href="#">View in browser</a> | <a href="#">Unsubscribe</a> | <a href="#">Contact</a>
-                      <br><br>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="color:#bbbbbb; font-size:12px;">
-                       © 2019 All Rights Reserved
-                       <br>
-                       <br>
-                    </td>
-                  </tr>
-                </table>
-            </td>
-          </tr>
-        </table>
-    </center>
-    </td>
-  </tr>
-</table>
-</body>
-</html>`
-          })
-          .then(info => res.redirect("/"))
-          .catch(error => console.log(error));
+                      </td>
+                    </tr>
+                  </table>
+                  </body>
+                  </html>`
+        })
+        .then(info => res.redirect("/"))
+        .catch(error => console.log(error));
       })
       .catch(err => {
         res.render("auth/signup", { message: "Something went wrong" });
@@ -278,7 +259,7 @@ authRoutes.post("/signup", (req, res) => {
   });
 });
 
-// Confirm email
+// Confirm email link route
 authRoutes.get("/confirm/:confirmNum", (req, res, next) => {
   User.findOneAndUpdate(
     { confirmationCode: req.params.confirmNum },
@@ -346,6 +327,7 @@ authRoutes.get("/profile/:userID", ensureLogin.ensureLoggedIn("/login"),
   }
 );
 
+// Profile edit
 authRoutes.get("/profile/edit/:profileID", ensureLogin.ensureLoggedIn("/login"), (req, res, next) => {
     User.findById(req.params.profileID)
       .then(profile => {
@@ -427,22 +409,14 @@ authRoutes.post('/events', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
 
 });
 
-// route that create events
+// Create events
 authRoutes.get('/createvents', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   res.render('auth/createvents', {user: req.user});
 });
 
-// route to get the data from gameboard for the axios
-authRoutes.get('/getgames', (req, res) => {
-  Gameboard.find().then(response => {
-    res.send(response)
-  }).catch(err => console.log(err))
-});
-
-// route post that save the events
 authRoutes.post('/createvents', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   const { title, type, description , numberplayers , typegameboard } = req.body;
-
+  
   let newEvent;
   if(type === 'boardgame') {
     newEvent = new Events ({
@@ -469,11 +443,18 @@ authRoutes.post('/createvents', ensureLogin.ensureLoggedIn('/login'), (req, res)
   .catch(error => {
     console.log('Error', eror)
   });
-
+  
   res.redirect('/events');
 });
 
-// router that enters a specific event
+// Gets the data from Gameboard collection for Axios
+authRoutes.get('/getgames', (req, res) => {
+  Gameboard.find().then(response => {
+    res.send(response)
+  }).catch(err => console.log(err))
+});
+
+// Event details
 authRoutes.get('/event/:ID', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
 
   const eventID = req.params.ID;
@@ -521,7 +502,7 @@ authRoutes.get('/event/:ID', ensureLogin.ensureLoggedIn('/login'), (req, res) =>
   
 });
 
-// router that edit a specific event
+// Event edit
 authRoutes.get('/edit-event/:idEvent', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   const user = req.user;
   Events.findById(req.params.idEvent)
@@ -545,7 +526,7 @@ authRoutes.post('/edit-event/:idEvent', ensureLogin.ensureLoggedIn('/login'), (r
   res.redirect(`/event/${req.params.idEvent}`);
 });
 
-// router that delete a specific event
+// Event deletion
 authRoutes.get('/delete-event/:idEvent', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
  
   Events.findOneAndRemove({_id: req.params.idEvent})
@@ -555,7 +536,7 @@ authRoutes.get('/delete-event/:idEvent', ensureLogin.ensureLoggedIn('/login'), (
   res.redirect('/events');
 });
 
-// User Joining events
+// Joining events
 authRoutes.get("/join/:idevent/:ID", ensureLogin.ensureLoggedIn("/login"), (req, res) => {
     const eventID = req.params.idevent;
     const player = req.params.ID;
@@ -589,7 +570,7 @@ authRoutes.get("/join/:idevent/:ID", ensureLogin.ensureLoggedIn("/login"), (req,
   }
 );
 
-// router that add comments in events
+// Add comments to event page
 authRoutes.post('/addcomment', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
 
   const { comment , eventID } = req.body ;
@@ -612,12 +593,13 @@ authRoutes.post('/addcomment', ensureLogin.ensureLoggedIn('/login'), (req, res) 
 
 });
 
+// Comment deletion
 authRoutes.get('/delete-comment/:idEvent/:idComment', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
-
     Events.findById(req.params.idEvent)
     .then(response =>{
       const runComments = response.comments;
       let newComments = [];
+
       runComments.forEach(element => {
         if(element.toString() !== req.params.idComment.toString()){
           newComments.push(element);
@@ -637,11 +619,12 @@ authRoutes.get('/delete-comment/:idEvent/:idComment', ensureLogin.ensureLoggedIn
     res.redirect(`/event/${req.params.idEvent}`);
 
 });
-// router that open google maps and bring all players nearby
+// Find players nearby page
 authRoutes.get('/findfriends', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   res.render('auth/people', {user: req.user, GMAPS: process.env.GMAPS});
 });
 
+// Send email to player chosen in Google maps
 authRoutes.post('/sendemail', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   const message = req.body;
   const user = req.user;
@@ -656,6 +639,7 @@ authRoutes.post('/sendemail', ensureLogin.ensureLoggedIn('/login'), (req, res) =
       .catch(error => console.log(error));
 })
 
+// Find game store page
 authRoutes.get('/places', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   res.render('auth/places-map', {user: req.user, GMAPS: process.env.GMAPS});
 });

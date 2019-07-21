@@ -12,6 +12,7 @@ window.onload = () => {
     });
 };
 
+// Changes the list options based on what was selected
 typeChange.onchange = () => {
     if(typeChange.value === 'boardgame'){
       typegame.setAttribute('style','display:inherit;');

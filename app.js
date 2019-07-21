@@ -13,14 +13,14 @@ const LocalStrategy = require("passport-local").Strategy;
 const GoogleStrategy = require("passport-google-oauth2").Strategy;
 const MongoStore = require("connect-mongo")(session);
 
-//routes
+// Routes
 const indexRoutes = require("./routes/index");
 const authRoutes = require("./routes/auth");
 
-//models
+// Models
 const User = require("./models/user");
 
-//connect mongoose
+// Mongoose connection
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
 const db = mongoose.connection;
@@ -38,7 +38,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(flash());
 
-// express session config
+// Express session configuration
 app.use(
   session({
     secret: "soletsnotflipthetableplease",
@@ -87,6 +87,7 @@ passport.use(
     }
   )
 );
+
 // Google Login 
 passport.use(
   new GoogleStrategy(

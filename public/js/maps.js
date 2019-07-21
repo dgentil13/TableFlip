@@ -11,6 +11,7 @@ function startMap() {
     center: Brazil
   });
 
+  // Gets the address from the profile and puts a marker.
   function geocodeAddress(geocoder, resultsMap, user) {
     geocoder.geocode({ address: user.address }, function(results, status) {
       if (status === "OK") {
@@ -32,7 +33,8 @@ function startMap() {
       }
     });
   }
-
+  
+  // Creates a list of people appearing on the map - including a modal for email sending.
   const peopleList = document.getElementById("people-list");
   let people = ``;
 
@@ -41,29 +43,28 @@ function startMap() {
     response.data.forEach(element => {
       if (element.address) {
         people += `
-                 <div class=" pb-4 friend d-flex flex-wrap mb-3">     
-                 <img class="img-map rounded-circle col-lg-6 col-md-3 col-sm-4" src=${element.imageUrl}>
-                   <div>
-                      <h4 class="text-uppercase"> ${element.firstName} ${element.lastName}</h4>
-                      <button type="button" class="btn btn-primary btn-sign mt-4" data-toggle="modal" data-target="#modalExemplo${count}"> Send Email! </button>
-                    </div>   
-                 </div>
+                <div class=" pb-4 friend d-flex flex-wrap mb-3">     
+                  <img class="img-map rounded-circle col-lg-6 col-md-3 col-sm-4" src=${element.imageUrl}>
+                  <div>
+                    <h4 class="text-uppercase"> ${element.firstName} ${element.lastName}</h4>
+                    <button type="button" class="btn btn-primary btn-sign mt-4" data-toggle="modal" data-target="#modalExemplo${count}"> Send Email! </button>
+                  </div>   
+                </div>
                     
                     <!-- Modal -->
                     <div class="modal fade" id="modalExemplo${count}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                          <div class="email-name">
-                            <h5 class="modal-title" id="exampleModalLabel">Send ${element.firstName} an email!</h5>
-                          </div>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
+                            <div class="email-name">
+                              <h5 class="modal-title" id="exampleModalLabel">Send ${element.firstName} an email!</h5>
                             </div>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
 
                           <div class="modal-body text-center">
-
                             <form action="/sendemail" method="POST" id="form-container">
                               <div class="sign-input form-group">
                                 <label for="exampleInputEmail1">Email</label>
@@ -76,17 +77,17 @@ function startMap() {
                                <button type="submit" class="btn btn-primary btn-sign btn-email">Send</button>
                             </form>
                           </div>
+                        </div>
                       </div>
-                    </div>
                     </div>`;
                     }
-                    geocodeAddress(geocoder, map, element);
-                    count +=1;
-                  });
-    peopleList.innerHTML = people;
-
+      geocodeAddress(geocoder, map, element);
+      count +=1;
+    });
+      peopleList.innerHTML = people;
   });
 
+  // Gets the browser location to see who's around you.
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       function(position) {

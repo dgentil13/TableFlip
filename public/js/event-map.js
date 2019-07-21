@@ -1,12 +1,8 @@
-
-
 function startMap() {
     const addressMap = document.getElementById('addressMap').value;
-  // Autocomplete for input field
 
-
+    // Sets the center of the map
     const geocoder = new google.maps.Geocoder();
-    // Store Ironhack's coordinates
     const Brazil = { lat: -11.409874,  lng: -41.280857 };
   
     // Initialize the map
@@ -16,7 +12,8 @@ function startMap() {
         center: Brazil
       }
     );
-  
+
+    // Gets the address from the edit event form and positions a marker.
     function geocodeAddress(geocoder, resultsMap, address) {
             
       geocoder.geocode({ 'address': address }, function (results, status) {

@@ -2,16 +2,17 @@ let map;
 let infowindow;
 let markers = [];
 function initMap() {
-  // displays info box above marker
+  // Displays info box above marker
   infowindow = new google.maps.InfoWindow();
-  //sets default location for map
+  // Sets a default location for map
   let defaultLoc = new google.maps.LatLng(-23.536862, -46.576731);
 
   map = new google.maps.Map(document.getElementById("map"), {
     center: defaultLoc,
     zoom: 15
   });
-  // Autocomplete for input field
+
+  // Autocomplete address for input field
   let input = document.getElementById("address");
   autocomplete = new google.maps.places.Autocomplete(input);
 
@@ -23,7 +24,8 @@ function initMap() {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         };
-        // Center map with user location
+
+        // Centers map with user location
         map.setCenter(user_location);
 
         const myPlace = new google.maps.LatLng(
@@ -55,7 +57,7 @@ function initMap() {
 
     console.log("Browser does not support geolocation.");
   }
-
+  
   // Searching places using input field for address
   const geocoder = new google.maps.Geocoder();
 
@@ -86,9 +88,9 @@ function initMap() {
       }
     });
   }
-
 }
 
+// Callback for calling marker function and getting the results from place query
 function callback(results, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
     for (let i = 0; i < results.length; i++) {
@@ -104,9 +106,10 @@ function createMarker(place) {
     map: map,
     position: place.geometry.location
   });
-  // marker arrays for deleting themm later
+  // Marker array for deleting them later
   markers.push(marker);
-  // adds info box above marker
+
+  // Adds info box above marker
   google.maps.event.addListener(marker, "click", function() {
   var contentString = `<h5> ${place.name}</h5>
                       <p> ${place.formatted_address}</p>`
@@ -115,11 +118,11 @@ function createMarker(place) {
     infowindow.open(map, this);
   });
 }
+
 // Removes the markers from the map, but keeps them in the array.
 function clearMarkers() {
   setMapOnAll(null);
 }
-
 // Deletes all markers in the array by removing references to them.
 function deleteMarkers() {
   clearMarkers();

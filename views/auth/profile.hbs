@@ -1,9 +1,7 @@
 <section class="container profile-page mt-5 d-flex flex-column align-items-center ">
   <div class="profile-main d-flex flex-column align-items-center pt-4">
-
     <img src="{{profile.imageUrl}}" class="rounded-circle profile-img">
     <h1 class=" font-weight-bold text-uppercase mt-3"> {{profile.firstName}} {{profile.lastName}}</h1>
-
     <div class="d-flex flex-column">
       <label class="text-uppercase mt-2 text-center"> About </label>
       <p class="col-lg-6 align-self-center text-left"> {{profile.description}}</p>
@@ -15,13 +13,9 @@
         <label class="mt-4">ADDRESS </label>
         <br>
         <span class="">{{profile.address}}</span>
-
       </div>
     </div>
   </div>
-        <button type="submit" class="btn btn-primary btn-prof mt-5"><a href="/profile/edit/{{profile._id}}">Edit</a></button>
-
-
+  <button type="submit" class="btn btn-primary btn-prof mt-5"><a href="/profile/edit/{{profile._id}}">Edit</a></button>
   </label>
-
 </section>
